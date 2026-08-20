@@ -1,0 +1,418 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+    @layer base:  resets and defaults, written with @apply
+    @layer components: named classes (.nav-cta, .btn-primary, etc.) built
+    from Tailwind utilities via @apply — this is "Tailwind doing the work,
+    just given a readable name"
+    Plain CSS at the bottom: only for effects Tailwind utilities can't
+    express directly — gradient text, the gradient-border mask trick, and
+    glow box-shadows. Everything else in this file is Tailwind.
+*/
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  body {
+    @apply m-0 bg-bg text-ink font-body antialiased overflow-x-hidden;
+    transition: background 0.4s ease; /* not a Tailwind utility target */
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display;
+  }
+  code {
+    @apply font-mono;
+  }
+  ::selection {
+    @apply bg-fuchsia text-white;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@layer components {
+  .container {
+    @apply max-w-[1100px] mx-auto px-6 relative z-[1];
+  }
+
+  /* ---------- Nav ---------- */
+  nav {
+    @apply sticky top-0 z-20 backdrop-blur-md bg-[rgba(2,6,23,0.6)] border-b border-line;
+  }
+  nav .inner {
+    @apply flex items-center justify-between px-6 py-4 max-w-[1100px] mx-auto relative;
+  }
+  .brand {
+    @apply font-bold text-[1.05rem] tracking-[-0.02em];
+  }
+  .brand .bracket {
+    @apply text-emerald;
+  }
+  .nav-links {
+    @apply flex gap-4 list-none m-0 p-0;
+  }
+  .nav-links a {
+    @apply text-ink-dim no-underline text-[0.92rem] font-medium transition-colors duration-200
+      hover:text-ink focus-visible:text-ink focus-visible:outline focus-visible:outline-2
+      focus-visible:outline-sky focus-visible:outline-offset-4 focus-visible:rounded;
+  }
+  .nav-right {
+    @apply flex items-center gap-[18px];
+  }
+  .nav-cta {
+    @apply px-4 py-2 rounded-lg text-[0.85rem] font-semibold text-white no-underline whitespace-nowrap
+      bg-gradient-to-br from-indigo to-fuchsia;
+  }
+  .menu-btn {
+    @apply hidden bg-transparent border border-line text-ink rounded-md px-2.5 py-1.5 cursor-pointer;
+  }
+
+  .theme-swatches {
+    @apply flex items-center gap-2.5;
+  }
+
+
+  .swatch{
+    @apply w-[20px] h-[20px] rounded-full p-0 cursor-pointer 
+     
+  }
+
+  .swatch.active{
+    @apply  border-white/30
+      transition-all duration-200 
+      hover:scale-[1.25] 
+      hover:border-ink;
+  }
+
+  @media (max-width: 720px) {
+    .nav-links {
+      @apply hidden flex-col gap-1 absolute top-full left-0 right-0 bg-[rgba(2,6,23,0.96)] border-b border-line px-6 py-3;
+    }
+    .nav-links.open {
+      @apply flex;
+    }
+    .nav-links a {
+      @apply  rounded-2xl h-12 w-12 bg-[green-400] py-1;
+    }
+    .menu-btn {
+      @apply inline-block;
+    }
+    .nav-cta {
+      @apply px-3 py-2 text-[0.78rem];
+    }
+  }
+  @media (max-width: 460px) {
+    .nav-cta {
+      @apply hidden;
+    }
+  }
+
+  /* ---------- Floating chat CTA ---------- */
+  .floating-cta {
+    @apply fixed right-6 bottom-6 z-30 inline-flex items-center justify-center w-14 h-14 rounded-full
+      text-white no-underline transition-all duration-200 hover:-translate-y-1 hover:scale-105
+      bg-gradient-to-br from-indigo to-fuchsia;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    @apply pt-[116px] pb-20;
+  }
+  .hero-grid {
+    @apply grid grid-cols-[1.3fr_0.9fr] gap-7 items-stretch max-[800px]:grid-cols-1;
+  }
+  .hero-photo {
+    @apply relative rounded-full overflow-hidden border border-line w-[400px] h-[400px];
+  }
+  .hero-photo img {
+    @apply w-full h-full object-cover block;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 font-mono text-[0.8rem] text-emerald 
+      bg-emerald/10 px-6 py-1 rounded-full mb-12;
+      box-shadow: 0 0 5px theme('colors.emerald');
+  }
+  .eyebrow .dot {
+    @apply w-1.5 h-1.5 rounded-full bg-emerald;
+    box-shadow: 0 0 20px theme('colors.emerald');
+  }
+  .hero h1 {
+    @apply text-[clamp(2.4rem,6vw,4.2rem)] leading-[1.05] tracking-[-0.02em] mb-5 font-bold;
+    text-shadow: 0 0 50px rgba(76, 77, 109, 0.5), 
+    0 0 100px rgba(78, 13, 88, 0.5);
+  }
+  .hero .lede {
+    @apply text-[1.25rem] text-ink-dim max-w-[560px] leading-[1.45] mb-10;
+  }
+  .hero-actions {
+    @apply flex gap-6 flex-wrap;
+  }
+  .btn-primary {
+    @apply text-white px-6 py-3 rounded-[10px] no-underline font-semibold text-[0.95rem] inline-block
+      transition-all duration-200 hover:-translate-y-0.5 bg-gradient-to-br from-indigo to-fuchsia;
+    box-shadow: 0 8px 24px rgba(5, 5, 42, 0.3);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 12px 30px rgba(88, 13, 99, 0.5);
+  }
+  .btn-secondary {
+    @apply border border-line text-ink px-6 py-3 rounded-[10px] no-underline font-semibold text-[0.95rem]
+      transition-colors duration-200 hover:border-sky hover:text-sky;
+  }
+
+  /* ---------- shared sections part ---------- */
+  section {
+    @apply py-[90px] relative;
+  }
+  .section-head {
+    @apply mb-12;
+  }
+  .section-tag {
+    @apply font-mono text-[1rem] text-sky block mb-2.5;
+  }
+  .section-title {
+    @apply text-[clamp(1.6rem,3.5vw,2.2rem)] font-bold tracking-[-0.02em] m-0;
+    text-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
+  }
+
+  /* ---------- About ---------- */
+  .about-grid {
+    @apply grid grid-cols-[1.2fr_1fr] gap-14 items-start max-[800px]:grid-cols-1 max-[800px]:gap-10;
+  }
+  .about-grid p {
+    @apply text-[1.25rem] text-ink-dim leading-[1.45] mb-4;
+  }
+  .skills-panel {
+    @apply bg-surface border  border-line rounded-2xl px-12 py-8;
+  }
+  .skills-panel h3 {
+    @apply mb-[18px] text-base text-ink-dim font-semibold;
+  }
+  .tag-cloud {
+    @apply flex flex-wrap justify-evenly gap-6;
+  }
+  .tag {
+    @apply font-mono text-[0.82rem] px-3  rounded-lg border;
+    @apply text-emerald bg-emerald/[0.07];
+    border-color: rgba(52, 211, 153, 0.35);
+  }
+
+
+  /* ---------- Projects ---------- */
+  .project-grid {
+    @apply grid grid-cols-2 gap-6 max-[800px]:grid-cols-1;
+  }
+  .project-card {
+    @apply relative bg-surface border border-line rounded-2xl p-7 overflow-hidden transition-all duration-300;
+  }
+  .project-top {
+    @apply flex justify-between items-start mb-4;
+  }
+  .project-icon {
+    @apply w-[36px] h-[36px] rounded-[8px] flex items-center justify-center font-mono font-semibold text-[0.9rem];
+  }
+  .project-card h3 {
+    @apply mb-2 text-[1.25rem];
+  }
+  .project-card p {
+    @apply mb-[18px] text-ink-dim text-[0.92rem] leading-[1.8];
+  }
+  .project-stack {
+    @apply flex flex-wrap gap-2 mb-2;
+  }
+  .chip {
+    @apply font-mono text-[0.72rem] text-ink-dimmer border border-line px-3 py-1 rounded-md;
+  }
+
+  .project-card.pending {
+    @apply border-dashed opacity-70;
+  }
+  .project-card.pending .project-icon {
+    @apply bg-surface-2 text-ink-dimmer;
+  }
+  .pending-badge {
+    @apply font-mono text-[0.68rem] font-medium text-orange px-2.5 py-1 rounded-full whitespace-nowrap;
+    border: 1px solid rgba(251, 146, 60, 0.35);
+    background: rgba(251, 146, 60, 0.08);
+  }
+  .pending-comp{
+    @apply bg-emerald/10 text-[0.68rem] font-mono font-medium border px-2.5 py-1 border-emerald/20 text-emerald whitespace-nowrap rounded-full;
+  }
+  .project-card.pending h3 {
+    @apply text-ink-dim;
+  }
+  .project-card.pending p {
+    @apply text-ink-dimmer italic;
+  }
+  
+  
+  /* ---------- Skills ---------- */
+  .skills-grid {
+    @apply grid grid-cols-2 gap-6 max-[700px]:grid-cols-1;
+  }
+  .skill-category {
+    @apply bg-surface border border-line rounded-2xl px-7 py-6;
+  }
+  .skill-category h3 {
+    @apply mb-4 text-sm text-ink-dim font-semibold font-mono;
+  }
+  .skills-legend {
+    @apply flex gap-6 mb-6;
+  }
+  .legend-item {
+    @apply flex items-center gap-2 text-[0.85rem] text-ink-dim font-mono;
+  }
+  .legend-dot {
+    @apply w-[9px] h-[9px] rounded-full bg-ink-dimmer;
+  }
+  
+  .tag-skill {
+    @apply flex flex-wrap justify-evenly gap-8;
+  }
+
+  .skill {
+    @apply font-mono text-[0.82rem] px-3  rounded-lg;
+    @apply text-ink-dim bg-ink-dimmer/15 border;
+    border: rgb(23, 23, 23);
+    box-shadow: 0 0 2.5px theme('colors.ink-dimmer');
+  }
+  .legend-dot.on {
+    @apply bg-emerald;
+    box-shadow: 0 0 8px theme('colors.emerald');
+  }
+  .legend-dot.pending {
+    @apply bg-orange;
+    box-shadow: 0 0 8px theme('colors.orange');
+  }
+  .skill.completed{
+    @apply bg-emerald/15 text-emerald border;
+    border: rgb(3, 45, 3);
+    box-shadow: 0 0 2.5px theme('colors.emerald');
+  }
+
+  .skill.pending{
+    @apply bg-orange/30 text-orange;
+    /*border: rgb(3, 45, 3);*/
+    border: 1px solid rgba(251, 146, 60, 0.20);
+    background: rgba(251, 146, 60, 0.08);
+  }
+
+
+  /* ---------- Contact ---------- */
+  .contact-box {
+    @apply text-center px-8 py-16 rounded-3xl border border-line;
+    background: linear-gradient(180deg, rgba(99, 102, 241, 0.25), rgba(217, 70, 239, 0.12), rgba(251, 146, 60, 0.1));
+  }
+  .contact-box h2 {
+    @apply text-[2.85rem] mb-4;
+    text-shadow: 0 0 40px rgba(99, 102, 241, 0.3);
+  }
+  .contact-box p {
+    @apply text-ink-dim max-w-[480px] mx-auto mb-8 leading-[1.6];
+  }
+  .social-row {
+    @apply flex gap-5 justify-center mt-10 flex-wrap;
+  }
+  .social-row a {
+    @apply text-ink-dim no-underline text-[0.9rem] border border-line px-3 py-1 rounded-full
+      transition-colors duration-200 hover:text-ink hover:border-sky;
+      background: rgb(10, 10, 10);
+  }
+
+  footer {
+    @apply text-center px-6 py-10 text-ink-dimmer text-[0.85rem] font-mono;
+  }
+}
+
+
+
+/* Text filled with a gradient — needs background-clip */
+.gradient-text {
+  background: linear-gradient(100deg, theme('colors.indigo') 0%, theme('colors.fuchsia') 55%, theme('colors.orange') 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Gradient-colored 1px border via mask trick */
+.hero-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  padding: 1px;
+  background: linear-gradient(160deg, theme('colors.indigo'), theme('colors.fuchsia'), theme('colors.orange'));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.project-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(135deg, theme('colors.indigo'), theme('colors.fuchsia'), theme('colors.orange'));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.project-card:hover::before {
+  opacity: 1;
+}
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: transparent;
+}
+.project-card.pending:hover {
+  transform: none;
+  border-color: theme('colors.line');
+}
+.project-card.pending::before {
+  display: none;
+}
+.project-icon {
+  background: linear-gradient(135deg, theme('colors.indigo'), theme('colors.fuchsia'));
+  color: white;
+}
+
+/* Two-ring "active" indicator on the selected swatch */
+.swatch.active {
+  border-color: theme('colors.ink');
+  box-shadow: 0 0 0 2px #000, 0 0 0 3px theme('colors.ink');
+}
+
+.floating-cta {
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+}
+.floating-cta:hover {
+  box-shadow: 0 14px 32px rgba(217, 70, 239, 0.45);
+}
+
+/* Starfield background — sits behind everything */
+.star-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.6);
+}
