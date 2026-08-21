@@ -7,6 +7,7 @@ const skillCategories = [
       skills: [
       { name: 'Python', status: 'completed' },
       { name: 'JavaScript', status: 'completed' },
+      { name: 'TypeScript', status: 'pending' },
       { name: 'Java', status: 'learning' },
       { name: 'C', status: 'learning' },
     ],
@@ -22,12 +23,13 @@ const skillCategories = [
     ],
   },
   {
-      name: 'backend',
+      name: 'backend & Databases',
       skills: [
       { name: 'FastAPI', status: 'learning' },
       { name: 'Node.js', status: 'pending' },
       { name: 'Express', status: 'pending' },
       { name: 'PostgreSQL', status: 'pending' },
+      { name: 'MySQL', status: 'pending' },
     ],
   },
   {

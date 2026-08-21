@@ -321,13 +321,18 @@
     @apply text-ink-dim max-w-[480px] mx-auto mb-8 leading-[1.6];
   }
   .social-row {
-    @apply flex gap-5 justify-center mt-10 flex-wrap;
+    @apply flex gap-5 justify-center  mt-10 flex-wrap;
   }
+  .socials{
+    @apply text-2xl
+  }
+  
   .social-row a {
-    @apply text-ink-dim no-underline text-[0.9rem] border border-line px-3 py-1 rounded-full
-      transition-colors duration-200 hover:text-ink hover:border-sky;
+    @apply inline-flex h-10 w-10 justify-center items-center text-ink-dim no-underline text-[0.9rem] text-center border border-line px-3 py-1 rounded-full
+      transition-colors duration-200 hover:text-ink hover:border-sky/20;
       background: rgb(10, 10, 10);
   }
+
 
   footer {
     @apply text-center px-6 py-10 text-ink-dimmer text-[0.85rem] font-mono;

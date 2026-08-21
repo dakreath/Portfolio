@@ -1,3 +1,4 @@
+import 'bootstrap-icons/font/bootstrap-icons.css';
 function Contact() {
   return (
     <section id="contact">
@@ -15,10 +16,11 @@ function Contact() {
           daknguenyreath@gmail.com
         </a>
         <div className="social-row">
-          <a href="#">GitHub</a>
-          <a href="#">LinkedIn</a>
-          <a href="#">Instagram</a>
-          <a href="/Resume.pdf">Resume ↗</a>
+
+          <a href="https://github.com/dakreath"><i className = "bi bi-github socials"></i></a>
+          <a href="#"><i className = "bi bi-linkedin socials"></i></a>
+          <a href="https://www.instagram.com/dak_rumjoo"><i className = "bi bi-instagram socials"></i></a>
+        
         </div>
       </div>
     </section>
