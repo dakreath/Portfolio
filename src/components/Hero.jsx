@@ -19,7 +19,7 @@ function Hero() {
             interfaces — currently focused on developer tools and design systems.
           </p>
           <div className="hero-actions">
-            <a className="btn-primary" href="#projects">
+            <a className="btn-hero" href="#projects">
               View my work
             </a>
             <a className="btn-secondary" href="#contact">

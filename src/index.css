@@ -42,7 +42,7 @@
 
 @layer components {
   .container {
-    @apply max-w-[1100px] mx-auto px-6 relative z-[1];
+    @apply max-w-[1100px] mx-auto px-6 relative z-[10];
   }
 
   /* ---------- Nav ---------- */
@@ -70,7 +70,7 @@
     @apply flex items-center gap-[18px];
   }
   .nav-cta {
-    @apply px-4 py-2 rounded-lg text-[0.85rem] font-semibold text-white no-underline whitespace-nowrap
+    @apply px-3 py-1 rounded-lg text-[0.85rem] font-semibold text-white no-underline whitespace-nowrap
       bg-gradient-to-br from-indigo to-fuchsia;
   }
   .menu-btn {
@@ -124,10 +124,25 @@
       bg-gradient-to-br from-indigo to-fuchsia;
   }
 
+
   /* ---------- Hero ---------- */
   .hero {
     @apply pt-[116px] pb-20;
   }
+
+  .btn-hero {
+    @apply text-white px-2  text-center rounded-[10px] no-underline font-semibold text-[0.95rem] inline-block
+      transition-all duration-200 hover:-translate-y-0.5 bg-gradient-to-br from-indigo to-fuchsia;
+    box-shadow: 0 8px 24px rgba(5, 5, 42, 0.3);
+  }
+  .btn-hero:hover {
+    box-shadow: 0 10px 30px rgba(88, 13, 99, 0.6);
+  }
+  .btn-secondary {
+    @apply border border-line text-ink px-3 py-2 rounded-[10px] no-underline font-semibold text-[0.95rem]
+      transition-colors duration-200 hover:border-sky hover:text-sky;
+  }
+
   .hero-grid {
     @apply grid grid-cols-[1.3fr_0.9fr] gap-7 items-stretch max-[800px]:grid-cols-1;
   }
@@ -156,18 +171,6 @@
   }
   .hero-actions {
     @apply flex gap-6 flex-wrap;
-  }
-  .btn-primary {
-    @apply text-white px-6 py-3 rounded-[10px] no-underline font-semibold text-[0.95rem] inline-block
-      transition-all duration-200 hover:-translate-y-0.5 bg-gradient-to-br from-indigo to-fuchsia;
-    box-shadow: 0 8px 24px rgba(5, 5, 42, 0.3);
-  }
-  .btn-primary:hover {
-    box-shadow: 0 12px 30px rgba(88, 13, 99, 0.5);
-  }
-  .btn-secondary {
-    @apply border border-line text-ink px-6 py-3 rounded-[10px] no-underline font-semibold text-[0.95rem]
-      transition-colors duration-200 hover:border-sky hover:text-sky;
   }
 
   /* ---------- shared sections part ---------- */
@@ -309,10 +312,20 @@
 
 
   /* ---------- Contact ---------- */
+
   .contact-box {
     @apply text-center px-8 py-16 rounded-3xl border border-line;
     background: linear-gradient(180deg, rgba(99, 102, 241, 0.25), rgba(217, 70, 239, 0.12), rgba(251, 146, 60, 0.1));
   }
+  .btn-primary {
+    @apply text-white px-3 py-2 rounded-[10px] no-underline font-semibold text-[0.95rem] inline-block
+      transition-all duration-200 hover:-translate-y-0.5 bg-gradient-to-br from-indigo to-fuchsia;
+    box-shadow: 0 8px 24px rgba(5, 5, 42, 0.3);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 10px 30px rgba(88, 13, 99, 0.6);
+  }
+
   .contact-box h2 {
     @apply text-[2.85rem] mb-4;
     text-shadow: 0 0 40px rgba(99, 102, 241, 0.3);
@@ -394,19 +407,21 @@
   color: white;
 }
 
+  /* ---------- Floating chat CTA ---------- */
+  .floating-cta {
+    @apply fixed right-6 bottom-6 z-30 inline-flex items-center justify-center 
+     rounded-full text-white no-underline transition-all duration-200 
+  
+  
+  }
+  
+
+
 /* Two-ring "active" indicator on the selected swatch */
 .swatch.active {
   border-color: theme('colors.ink');
   box-shadow: 0 0 0 2px #000, 0 0 0 3px theme('colors.ink');
 }
-
-.floating-cta {
-  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
-}
-.floating-cta:hover {
-  box-shadow: 0 14px 32px rgba(217, 70, 239, 0.45);
-}
-
 /* Starfield background — sits behind everything */
 .star-field {
   position: fixed;
