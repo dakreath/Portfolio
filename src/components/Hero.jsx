@@ -15,8 +15,11 @@ function Hero() {
             <span className="gradient-text">software products.</span>
           </h1>
           <p className="lede">
-            I'm a full-stack engineer who turns complex problems into clean, reliable
+            I'm an aspiring full-stack engineer who turns complex problems into clean, reliable
             interfaces — currently focused on developer tools and design systems.
+            Software Engineering student at McGill, building clean interfaces with
+             a structured, deliberate approach — always learning, always shipping. 
+             Currently deep in React, Tailwind, and FastAPI.
           </p>
           <div className="hero-actions">
             <a className="btn-hero" href="#projects">

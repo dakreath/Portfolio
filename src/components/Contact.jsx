@@ -18,7 +18,7 @@ function Contact() {
         <div className="social-row">
 
           <a href="https://github.com/dakreath"><i className = "bi bi-github socials"></i></a>
-          <a href="#"><i className = "bi bi-linkedin socials"></i></a>
+          <a href="https://linkedin.com/in/dak-reath-28a09938a" target="_blank" rel="noopener noreferrer"><i className = "bi bi-linkedin socials"></i></a>
           <a href="https://www.instagram.com/dak_rumjoo"><i className = "bi bi-instagram socials"></i></a>
         
         </div>

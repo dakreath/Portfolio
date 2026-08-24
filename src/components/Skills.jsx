@@ -5,11 +5,11 @@ const skillCategories = [
   {
       name: 'languages',
       skills: [
-      { name: 'Python', status: 'completed' },
+      { name: 'Python -> coursework', status: 'completed' },
       { name: 'JavaScript', status: 'completed' },
       { name: 'TypeScript', status: 'pending' },
-      { name: 'Java', status: 'learning' },
-      { name: 'C', status: 'learning' },
+      { name: 'Java -> coursework', status: 'learning' },
+      { name: 'C -> coursework', status: 'learning' },
     ],
   },
   {

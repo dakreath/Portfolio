@@ -50,16 +50,6 @@ function Projects() {
               <span className="chip">{project.pending ? 'TBD' : project.stack}</span>
             </div>
 
-            <div className= "link">
-              {!project.pending && project.link && (
-                <a href = {project.link}
-                    target = "_blank"
-                    rel = "noopener noreferrer">
-                    Dive in
-                </a>
-                
-              ) }
-            </div>
           </div>
         ))}
       </div>
