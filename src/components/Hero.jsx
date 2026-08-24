@@ -25,7 +25,7 @@ function Hero() {
             <a className="btn-hero" href="#projects">
               View my work
             </a>
-            <a className="btn-secondary" href="#contact">
+            <a className="btn-secondary" href="mailto:daknguenyreath@gmail.com">
               Get in touch
             </a>
           </div>
