@@ -42,7 +42,7 @@ function Navbar({ menuOpen, setMenuOpen, activeSwatch, setActiveSwatch }) {
         </ul>
 
         <div className = "nav-right">
-          <a className = "nav-cta" href="/Resume.pdf">
+          <a className = "nav-cta" href="/./Resume/Resume.pdf">
             My Resumé
           </a>
           <div className = "theme-swatches" role="group" aria-label = "Change background gradient">

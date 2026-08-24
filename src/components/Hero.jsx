@@ -48,7 +48,7 @@ function Hero() {
             transition: { type: 'spring', stiffness: 300, damping: 18 },
           }}
         >
-          <img src="/Photo.png" alt="Dak Ngueny" />
+          <img src="./Photo.png" alt="Dak Ngueny" />
         </motion.div>
       </div>
     </section>
