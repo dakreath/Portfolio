@@ -20,22 +20,22 @@ function Navbar({ menuOpen, setMenuOpen, activeSwatch, setActiveSwatch }) {
 
         <ul className={`nav-links ${menuOpen ? 'open' : ''}`} id="navLinks">
           <li>
-            <a href="#about" onClick={closeMenu}>
+            <a href="about" onClick={closeMenu}>
               About
             </a>
           </li>
           <li>
-            <a href="#projects" onClick={closeMenu}>
+            <a href="projects" onClick={closeMenu}>
               Projects
             </a>
           </li>
           <li>
-            <a href="#skills" onClick={closeMenu}>
+            <a href="skills" onClick={closeMenu}>
               Skills
             </a>
           </li>
           <li>
-            <a href="#contact" onClick={closeMenu}>
+            <a href="contact" onClick={closeMenu}>
               Contact
             </a>
           </li>

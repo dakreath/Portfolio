@@ -13,7 +13,7 @@ function Contact() {
           reach me is email.
         </p>
         <a className="btn-primary" href="mailto:daknguenyreath@gmail.com">
-          daknguenyreath@gmail.com
+            daknguenyreath@gmail.com
         </a>
         <div className="social-row">
 
