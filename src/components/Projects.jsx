@@ -10,8 +10,8 @@ const projects = [
     link: 'https://github.com/dakreath'
     },
   { id: '02', 
-    title: 'Project two', 
-    description: 'A simple web app designed for checking relationship compatibility between lovers/friends/family members',
+    title: 'Infinity Checker', 
+    description: 'An interactive, simple web app designed for checking closeness between compatibility between lovers/friends/family members meant for fun',
     stack: 'HTML | CSS | Vanilla Java Script',
     pending: false, 
     complete: true,
