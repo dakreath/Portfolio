@@ -2,14 +2,21 @@
 // real details and drop "pending: true" so it renders as a normal card.
 const projects = [
   { id: '01', 
-      title: 'My Portfolio Website', 
-      description: 'A personal portfolio website built to showcase my web development projects and skills.', 
-      stack: 'React | CSS | Vite | Tailwind', 
-      pending: false,
-      complete: true,
-      link: 'https://github.com/dakreath'
+    title: 'My Portfolio Website', 
+    description: 'A personal portfolio website built to showcase my web development projects and skills.', 
+    stack: 'React | CSS | Vite | Tailwind', 
+    pending: false,
+    complete: true,
+    link: 'https://github.com/dakreath'
     },
-  { id: '02', title: 'Project two', pending: true, complete: false },
+  { id: '02', 
+    title: 'Project two', 
+    description: 'A simple web app designed for checking relationship compatibility between lovers/friends/family members',
+    stack: 'HTML | CSS | Vanilla Java Script',
+    pending: false, 
+    complete: true,
+    link: 'https: //github.com/dakreath'
+    },
   { id: '03', title: 'Project three', pending: true, complete: false },
   { id: '04', title: 'Project four', pending: true, complete: false},
 ]
