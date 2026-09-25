@@ -18,7 +18,7 @@ export const hero = {
     messages: [
       { text: 'Before you leave, check out my fun facts', target: 'fun-facts' },
       { text: 'See what I work with', target: 'skills' },
-      { text: 'Looking for an intern, or someone to mentor? That could be me.', target: 'contact' },
+      { text: 'Looking for an intern, or someone to mentor, or book me for future role, or freelance? That could be me.', target: 'contact' },
     ],
   },
   actions: [
