@@ -1,0 +1,7 @@
+// All site content in one place. Import it like: import { site, projects } from '../../data'
+export * from './site.js'
+export * from './hero.js'
+export * from './about.js'
+export * from './journey.js'
+export * from './projects.js'
+export * from './skills.js'

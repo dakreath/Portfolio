@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Words in double curly braces are filled in from src/data/site.js (see vite.config.js) -->
+    <title>{{title}}</title>
+    <meta name="description" content="{{description}}" />
+    <meta name="author" content="{{name}}" />
+    <meta name="theme-color" content="#020617" />
+    <link rel="canonical" href="{{url}}" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+
+    <!-- Link previews on LinkedIn, iMessage, Slack, X... -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="{{name}}" />
+    <meta property="og:title" content="{{title}}" />
+    <meta property="og:description" content="{{shortDescription}}" />
+    <meta property="og:url" content="{{url}}" />
+    <meta property="og:image" content="{{image}}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{title}}" />
+    <meta name="twitter:description" content="{{shortDescription}}" />
+    <meta name="twitter:image" content="{{image}}" />
+
+    <!-- Helps search engines understand who this page is about -->
+    <script type="application/ld+json">
+      {{jsonLd}}
+    </script>
+
+    <link
+      rel="preload"
+      as="image"
+      href="./photo.webp"
+      imagesrcset="./photo-400.webp 400w, ./photo.webp 800w"
+      imagesizes="(max-width: 440px) 90vw, 400px"
+      fetchpriority="high"
+    />
+  </head>
+  <body>
+    <noscript>
+      <p style="color: #f1f5f9; font-family: system-ui; padding: 24px">
+        This site needs JavaScript. Reach {{name}} at {{email}}.
+      </p>
+    </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
