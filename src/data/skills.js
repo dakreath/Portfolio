@@ -55,9 +55,9 @@ export const skills = {
 
 // Labels for the status filter buttons
 export const skillStatuses = {
-  completed: { label: 'Completed' },
-  pending: { label: 'Pending' },
+  completed: { label: 'Comfortable' },
   learning: { label: 'Learning' },
+  pending: { label: 'Up next' },
 }
 
 // The lists below are built from the data above. No need to edit them.

@@ -2,13 +2,13 @@ import { site } from './site.js'
 
 // The top of the page: status pill, headline, intro, greeting bubbles and buttons
 export const hero = {
-  status: 'available for new projects',
+  status: 'open to SWE internships',
   headline: {
-    lead: 'Building fast, thoughtful',
-    highlight: 'software products.',
+    lead: 'From Kakuma to McGill,',
+    highlight: 'building software that ships.',
   },
   intro:
-    "I'm a second-year Software Engineering student at McGill and an aspiring full-stack engineer who turns complex problems into clean, reliable interfaces. I enjoy Java and software systems, and I'm currently deep in React, Tailwind, and FastAPI — always learning, always shipping.",
+    "I'm a second-year Software Engineering student at McGill who first learned to code in Kakuma refugee camp. I'm an aspiring full-stack engineer: React and Tailwind on the front end, learning FastAPI on the back end, and building Gambella Marketplace, an e-commerce platform, with two teammates.",
   // Chat bubbles that pop up next to the photo.
   // `target` is the section to scroll to, or 'fun-facts' to open the fun facts box.
   greeting: {
@@ -16,9 +16,9 @@ export const hero = {
     // Used when the link has a name in it, e.g. dakreath.github.io/Portfolio/?name=Sarah
     helloNamed: 'Hi {name} 👋',
     messages: [
-      { text: 'Before you leave, check out my fun facts', target: 'fun-facts' },
+      { text: 'Fun facts', target: 'fun-facts' },
       { text: 'See what I work with', target: 'skills' },
-      { text: 'Looking for an intern, or someone to mentor, or book me for future role, or freelance? That could be me.', target: 'contact' },
+      { text: 'Hiring a software engineering intern? Let’s talk.', target: 'contact' },
     ],
   },
   actions: [

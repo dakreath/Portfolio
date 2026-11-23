@@ -2,10 +2,10 @@ import { techStripRows } from '../../data'
 import Icon from '../ui/Icon.jsx'
 
 // A short row is repeated until it has at least this many items, so the loop never shows a gap
-const MIN_ITEMS = 10
+const MIN_ITEMS = 18
 
 // One row that scrolls sideways forever (the animation is in index.css). Hovering pauses it.
-function StripRow({ items, label, reverse = false, duration = 40 }) {
+function StripRow({ items, label, reverse = false, duration = 26 }) {
   const repeats = Math.max(1, Math.ceil(MIN_ITEMS / items.length))
   const rowItems = Array.from({ length: repeats }, () => items).flat()
 
@@ -38,7 +38,7 @@ function TechStrip() {
   return (
     <div className="tech-strip">
       <StripRow items={topRow} label="Languages and frontend" />
-      <StripRow items={bottomRow} label="Backend and tools" reverse duration={45} />
+      <StripRow items={bottomRow} label="Backend and tools" reverse />
     </div>
   )
 }

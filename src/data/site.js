@@ -20,7 +20,7 @@ export const site = {
   shareImage: 'og-image.jpg',
 
   // Grey example text shown in the empty contact form fields
-  contactPlaceholders: { name: 'Goy Kuoth', email: 'goykuothnhial@gmail.com' },
+  contactPlaceholders: { name: 'Your name', email: 'you@example.com' },
 
   // Small flags shown on the hero photo (ISO country codes)
   flags: [
@@ -54,17 +54,17 @@ export const sections = [
 
 // Background colors the visitor can pick in the navbar. The first one is the default.
 export const themes = [
-  { id: 'black', label: 'Black', preview: '#000000', background: '#000000' },
+  { id: 'white', label: 'White', preview: '#ffffff', background: '#ffffff' },
   {
-    id: 'grey',
-    label: 'Grey',
-    preview: 'linear-gradient(135deg,#09090B,#27272A,#3F3F46)',
-    background: 'linear-gradient(160deg,#09090B,#18181B,#27272A)',
+    id: 'mint',
+    label: 'Mint',
+    preview: 'linear-gradient(135deg,#ffffff,#f0fdf4,#dcfce7)',
+    background: 'linear-gradient(160deg,#ffffff,#f7fdf9,#ecfdf3)',
   },
   {
-    id: 'aura',
-    label: 'Aurora',
-    preview: 'linear-gradient(135deg,#020617,#1E1B4B,#2E1065)',
-    background: 'linear-gradient(160deg,#020617,#0F0A2E,#1E1B4B)',
+    id: 'sage',
+    label: 'Sage',
+    preview: 'linear-gradient(135deg,#f6f8f6,#e8efe9,#d9e6dc)',
+    background: 'linear-gradient(160deg,#fafbfa,#f1f5f2,#e8efe9)',
   },
 ]

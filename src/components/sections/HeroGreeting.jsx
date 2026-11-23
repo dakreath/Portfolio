@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, m } from 'framer-motion'
 import { hero } from '../../data'
 import { useVisitorName } from '../../hooks/useVisitorName.js'
 import { openFunFacts, scrollToId } from '../../lib/scroll.js'
 import Icon from '../ui/Icon.jsx'
 
-// Chat bubbles next to the hero photo that "type" themselves out, like a text conversation.
+// Chat bubbles stacked above the hero photo that "type" themselves out, like a text conversation.
 // The text lives in data/hero.js.
 
 // Timing in milliseconds
@@ -17,7 +17,6 @@ const EASE = [0.22, 1, 0.36, 1]
 
 // Shared animation for every bubble
 const bubbleAnimation = {
-  layout: 'position', // older bubbles glide up smoothly when a new one appears
   initial: { opacity: 0, y: 12, scale: 0.96 },
   animate: { opacity: 1, y: 0, scale: 1 },
   exit: { opacity: 0, scale: 0.96 },
@@ -72,7 +71,7 @@ function HeroGreeting() {
   return (
     <AnimatePresence>
       {open && (
-        <motion.aside
+        <m.aside
           className="greeting"
           aria-label="Quick links"
           exit={{ opacity: 0, y: 10, transition: { duration: 0.25 } }}
@@ -80,7 +79,7 @@ function HeroGreeting() {
           <AnimatePresence initial={false}>
             {/* "Hi 👋" bubble with the close button */}
             {shownCount >= 1 && (
-              <motion.div key="hello" className="greeting-hello" {...bubbleAnimation}>
+              <m.div key="hello" className="greeting-hello" {...bubbleAnimation}>
                 {helloText}
                 <button
                   type="button"
@@ -90,12 +89,12 @@ function HeroGreeting() {
                 >
                   <Icon name="x-lg" />
                 </button>
-              </motion.div>
+              </m.div>
             )}
 
             {/* The message bubbles, each one a link */}
             {visibleMessages.map((message) => (
-              <motion.button
+              <m.button
                 key={message.text}
                 type="button"
                 className="greeting-msg"
@@ -104,16 +103,15 @@ function HeroGreeting() {
               >
                 {message.text}
                 <Icon name="arrow-right" className="arrow" />
-              </motion.button>
+              </m.button>
             ))}
 
             {/* The "..." typing dots */}
             {typing && (
-              <motion.div
+              <m.div
                 key="typing"
                 className="greeting-typing"
                 aria-hidden="true"
-                layout="position"
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, transition: { duration: 0.12 } }}
@@ -122,10 +120,10 @@ function HeroGreeting() {
                 <span />
                 <span />
                 <span />
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
-        </motion.aside>
+        </m.aside>
       )}
     </AnimatePresence>
   )

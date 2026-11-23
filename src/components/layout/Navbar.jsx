@@ -1,8 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { sections, site, themes } from '../../data'
 import { useActiveSection } from '../../hooks/useActiveSection.js'
 import { asset } from '../../lib/asset.js'
-import Flag from '../ui/Flag.jsx'
 import Icon from '../ui/Icon.jsx'
 
 const sectionIds = sections.map((section) => section.id)
@@ -11,6 +10,15 @@ function Navbar({ menuOpen, setMenuOpen, themeId, setThemeId, onOpenPalette }) {
   const activeSection = useActiveSection(sectionIds)
   const navRef = useRef(null)
   const closeMenu = () => setMenuOpen(false)
+
+  // Once the page scrolls a little, the floating bar gets a bit tighter and more solid
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 24)
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    return () => window.removeEventListener('scroll', update)
+  }, [])
 
   // While the phone menu is open: close it on Escape, or when tapping outside the navbar
   useEffect(() => {
@@ -32,7 +40,7 @@ function Navbar({ menuOpen, setMenuOpen, themeId, setThemeId, onOpenPalette }) {
   }, [menuOpen, setMenuOpen])
 
   return (
-    <nav className="site-nav" ref={navRef}>
+    <nav className={`site-nav ${scrolled ? 'scrolled' : ''}`} ref={navRef}>
       <div className="nav-inner">
         {/* Logo: </Dak Ngueny> */}
         <a className="brand" href="#top" onClick={closeMenu}>
@@ -108,15 +116,6 @@ function Navbar({ menuOpen, setMenuOpen, themeId, setThemeId, onOpenPalette }) {
           </button>
         </div>
       </div>
-
-      {/* Flags just under the header line, centered */}
-      <ul className={`nav-flags ${menuOpen ? 'hidden' : ''}`} aria-label="Countries">
-        {site.flags.map((flag) => (
-          <li key={flag.code} className="has-tip" data-tip={flag.label}>
-            <Flag code={flag.code} title={flag.label} />
-          </li>
-        ))}
-      </ul>
     </nav>
   )
 }

@@ -1,7 +1,9 @@
 import { hero, site } from '../../data'
 import { asset } from '../../lib/asset.js'
+import Flag from '../ui/Flag.jsx'
 import Icon from '../ui/Icon.jsx'
 import Magnetic from '../ui/Magnetic.jsx'
+import ScrollFade from '../ui/ScrollFade.jsx'
 import TiltCard from '../ui/TiltCard.jsx'
 import HeroGreeting from './HeroGreeting.jsx'
 
@@ -16,11 +18,21 @@ function Hero() {
   return (
     <section className="hero" id="top">
       <div className="hero-grid">
-        <div className="hero-text">
-          <span className="eyebrow rise" style={riseDelay(0)}>
-            <span className="eyebrow-dot" />
-            {hero.status}
-          </span>
+        {/* The hero text fades and shrinks as you scroll down past it */}
+        <ScrollFade className="hero-text">
+          <div className="hero-meta rise" style={riseDelay(0)}>
+            <span className="eyebrow">
+              <span className="eyebrow-dot" />
+              {hero.status}
+            </span>
+            <ul className="hero-flags" aria-label="Countries">
+              {site.flags.map((flag) => (
+                <li key={flag.code} className="has-tip" data-tip={flag.label}>
+                  <Flag code={flag.code} title={flag.label} />
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <h1 className="rise" style={riseDelay(0.1)}>
             {hero.headline.lead}
@@ -42,7 +54,7 @@ function Hero() {
               </Magnetic>
             ))}
           </div>
-        </div>
+        </ScrollFade>
 
         <div className="hero-photo-wrap rise-pop">
           <TiltCard
@@ -54,7 +66,7 @@ function Hero() {
             <img
               src={asset(site.photo.src)}
               srcSet={`${asset(site.photo.srcSmall)} 400w, ${asset(site.photo.src)} 800w`}
-              sizes="(max-width: 440px) 90vw, 400px"
+              sizes="(max-width: 440px) 260px, 300px"
               width="800"
               height="800"
               alt={site.photo.alt}

@@ -13,6 +13,13 @@ function Footer() {
         press <kbd>⌘</kbd>
         <kbd>K</kbd> to jump anywhere
       </span>
+      <button
+        type="button"
+        className="footer-top"
+        onClick={() => window.dispatchEvent(new Event('portfolio:intro'))}
+      >
+        back to intro
+      </button>
       <a href="#top" className="footer-top">
         back to top <Icon name="arrow-up" />
       </a>

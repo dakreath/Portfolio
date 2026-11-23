@@ -19,7 +19,7 @@ export const journey = {
     {
       when: 'Community',
       title: 'Volunteer · McGill Tech Fair',
-      body: "Volunteered with the McGill Tech Fair team — giving back to the tech community that's helping me grow.",
+      body: "Volunteered with the McGill Tech Fair team over two days — about 3 hours each day, nonstop — giving back to the tech community that's helping me grow.",
       tags: ['Volunteering', 'Events', 'Networking'],
       icon: 'people',
     },
@@ -36,6 +36,13 @@ export const journey = {
       body: 'Shipping React + Tailwind frontends and learning FastAPI on the backend — this portfolio included.',
       tags: ['React', 'Tailwind', 'FastAPI'],
       icon: 'lightning-charge',
+    },
+    {
+      when: 'Starting December 2026',
+      title: 'Project with a McGill professor',
+      body: 'Joining a project led by one of my McGill professors, starting next month.',
+      tags: ['Mentorship', 'Collaboration'],
+      icon: 'people',
     },
     {
       when: 'Next',

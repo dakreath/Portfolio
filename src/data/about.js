@@ -1,6 +1,6 @@
 // The About section text
 export const about = {
-  title: 'A little about me & my Software development journey',
+  title: 'About me',
   paragraphs: [
     "It started as something I nearly missed. I was in Kakuma refugee camp, Kenya, and had to compete for a seat in a free vocational training center's HTML, CSS, and JavaScript course. At first, the syntax felt impenetrable — abstract, almost arcane. Then the logic clicked into place, and what I'd expected to be tedious became genuinely absorbing. Four years on, what began by chance has become the foundation my career — and much of my resolve — is built on.",
     "Today I'm a second-year Software Engineering student at McGill. Outside of class, I volunteered with the McGill Tech Fair and served as technical lead on a Riipen Labs group project. I'm drawn to teams that treat craft as seriously as they treat deadlines.",
@@ -37,7 +37,7 @@ export const funFacts = {
         {
           emoji: '🧩',
           key: 'Clarity-driven',
-          text: 'Ambiguous instructions are my kryptonite, so I ask until the goal is crystal clear.',
+          text: 'When requirements are fuzzy, I ask questions until the goal is crystal clear.',
         },
       ],
     },

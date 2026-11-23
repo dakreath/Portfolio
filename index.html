@@ -2,15 +2,32 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- Show the green intro cover (IntroCover.jsx) once per visit, before the page paints.
+         Reloading skips it. Without JavaScript this never runs, so the portfolio shows directly. -->
+    <script>
+      try {
+        if (!sessionStorage.getItem('introSeen')) document.documentElement.classList.add('intro')
+      } catch {
+        document.documentElement.classList.add('intro')
+      }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Words in double curly braces are filled in from src/data/site.js (see vite.config.js) -->
     <title>{{title}}</title>
     <meta name="description" content="{{description}}" />
     <meta name="author" content="{{name}}" />
-    <meta name="theme-color" content="#020617" />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="canonical" href="{{url}}" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+
+    <!-- Fonts for the Projects section: Newsreader (serif titles) and Inter (text) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap"
+    />
 
     <!-- Link previews on LinkedIn, iMessage, Slack, X... -->
     <meta property="og:type" content="website" />
@@ -36,13 +53,13 @@
       as="image"
       href="./photo.webp"
       imagesrcset="./photo-400.webp 400w, ./photo.webp 800w"
-      imagesizes="(max-width: 440px) 90vw, 400px"
+      imagesizes="(max-width: 440px) 260px, 300px"
       fetchpriority="high"
     />
   </head>
   <body>
     <noscript>
-      <p style="color: #f1f5f9; font-family: system-ui; padding: 24px">
+      <p style="color: #0c1a12; font-family: system-ui; padding: 24px">
         This site needs JavaScript. Reach {{name}} at {{email}}.
       </p>
     </noscript>

@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { motion, useScroll, useSpring } from 'framer-motion'
+import { m, useScroll, useSpring } from 'framer-motion'
 import { journey } from '../../data'
 import Icon from '../ui/Icon.jsx'
 import SectionHeading from '../ui/SectionHeading.jsx'
@@ -18,7 +18,7 @@ function Journey() {
 
       <div className="timeline" ref={timelineRef}>
         <div className="timeline-track" aria-hidden="true">
-          <motion.div className="timeline-fill" style={{ scaleY: lineHeight }} />
+          <m.div className="timeline-fill" style={{ scaleY: lineHeight }} />
         </div>
 
         {journey.milestones.map((milestone, i) => {
@@ -26,7 +26,7 @@ function Journey() {
           const side = i % 2 === 0 ? 'left' : 'right'
 
           return (
-            <motion.div
+            <m.div
               className={`milestone ${side}`}
               key={milestone.title}
               initial={{ opacity: 0, x: side === 'right' ? 40 : -40 }} // slide in from its own side
@@ -35,7 +35,7 @@ function Journey() {
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
               {/* Round icon on the line */}
-              <motion.span
+              <m.span
                 className="milestone-dot"
                 initial={{ scale: 0 }}
                 whileInView={{ scale: 1 }}
@@ -43,9 +43,9 @@ function Journey() {
                 transition={{ type: 'spring', stiffness: 300, damping: 15, delay: 0.2 }}
               >
                 <Icon name={milestone.icon} />
-              </motion.span>
+              </m.span>
 
-              <div className="card milestone-card spotlight">
+              <div className="card milestone-card">
                 <span className="milestone-when">{milestone.when}</span>
                 <h3>{milestone.title}</h3>
                 <p>{milestone.body}</p>
@@ -64,7 +64,7 @@ function Journey() {
                   </a>
                 )}
               </div>
-            </motion.div>
+            </m.div>
           )
         })}
       </div>

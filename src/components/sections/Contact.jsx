@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { site, socials } from '../../data'
 import { useClipboard } from '../../hooks/useClipboard.js'
 import ContactForm from '../contact/ContactForm.jsx'
@@ -11,15 +11,13 @@ function Contact() {
 
   return (
     <section id="contact">
-      <Reveal className="contact-box spotlight">
+      <Reveal className="contact-box">
         <h2>
           Let's build something
           <br />
           worth shipping.
         </h2>
-        <p>
-          I'm currently open to new roles and select freelance projects. The fastest way to reach me is email.
-        </p>
+        <p>I'm looking for software engineering internships. The fastest way to reach me is email.</p>
 
         <div className="contact-actions">
           <button
@@ -39,7 +37,7 @@ function Contact() {
         {/* Social icons, sliding in one after another */}
         <div className="social-row">
           {socials.map((social, i) => (
-            <motion.a
+            <m.a
               key={social.id}
               className="social has-tip"
               href={social.href}
@@ -55,7 +53,7 @@ function Contact() {
               whileTap={{ scale: 0.95 }}
             >
               <Icon name={social.icon} />
-            </motion.a>
+            </m.a>
           ))}
         </div>
       </Reveal>
