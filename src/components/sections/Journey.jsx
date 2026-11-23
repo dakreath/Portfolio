@@ -1,11 +1,28 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { m, useScroll, useSpring } from 'framer-motion'
-import { journey } from '../../data'
+import { journey, journeyTypes } from '../../data'
+import FilterBar from '../ui/FilterBar.jsx'
 import Icon from '../ui/Icon.jsx'
 import SectionHeading from '../ui/SectionHeading.jsx'
 
+// Filter buttons: "All", then one per type that has at least one milestone
+const filterOptions = [
+  { id: 'all', label: 'All', count: journey.milestones.length },
+  ...Object.entries(journeyTypes)
+    .map(([typeId, label]) => ({
+      id: typeId,
+      label,
+      count: journey.milestones.filter((milestone) => milestone.type === typeId).length,
+    }))
+    .filter((option) => option.count > 0),
+]
+
 function Journey() {
   const timelineRef = useRef(null)
+  const [filter, setFilter] = useState('all')
+
+  const visibleMilestones =
+    filter === 'all' ? journey.milestones : journey.milestones.filter((milestone) => milestone.type === filter)
 
   // The colored line down the middle fills in as you scroll through the timeline.
   // progress goes from 0 to 1 while the timeline moves up the screen.
@@ -15,13 +32,14 @@ function Journey() {
   return (
     <section id="journey">
       <SectionHeading id="journey" title={journey.title} />
+      <FilterBar label="Filter milestones" options={filterOptions} value={filter} onChange={setFilter} />
 
       <div className="timeline" ref={timelineRef}>
         <div className="timeline-track" aria-hidden="true">
           <m.div className="timeline-fill" style={{ scaleY: lineHeight }} />
         </div>
 
-        {journey.milestones.map((milestone, i) => {
+        {visibleMilestones.map((milestone, i) => {
           // Cards alternate: left, right, left, ...
           const side = i % 2 === 0 ? 'left' : 'right'
 

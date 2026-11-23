@@ -23,6 +23,7 @@ export const hero = {
   },
   actions: [
     { label: 'View my work', href: '#projects', icon: 'arrow-down-short', variant: 'primary' },
+    { label: 'My moves', href: '#journey', icon: 'signpost-split', variant: 'secondary' }, // the Milestones timeline
     { label: 'Get in touch', href: `mailto:${site.email}`, variant: 'secondary' },
   ],
 }

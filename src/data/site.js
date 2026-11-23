@@ -46,7 +46,7 @@ export const socials = [
 // and the "01 · about" numbers. numbered: false = no number.
 export const sections = [
   { id: 'about', label: 'About', icon: 'person' },
-  { id: 'journey', label: 'Journey', icon: 'signpost-split' },
+  { id: 'journey', label: 'Milestones', icon: 'signpost-split' },
   { id: 'projects', label: 'Projects', icon: 'grid' },
   { id: 'skills', label: 'Skills', icon: 'cpu' },
   { id: 'contact', label: 'Contact', icon: 'envelope', numbered: false },
