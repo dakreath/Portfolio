@@ -1,4 +1,4 @@
-import { motion, useSpring } from 'framer-motion'
+import { m, useSpring } from 'framer-motion'
 
 // Wrap a button in this and it gently follows the cursor when you hover it.
 // strength: how far it moves (0.3 = 30% of the distance to the cursor)
@@ -21,14 +21,14 @@ function Magnetic({ children, strength = 0.3 }) {
   }
 
   return (
-    <motion.span
+    <m.span
       className="magnetic"
       style={{ x, y }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
       {children}
-    </motion.span>
+    </m.span>
   )
 }
 

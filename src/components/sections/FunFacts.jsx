@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, m } from 'framer-motion'
 import { funFacts } from '../../data'
 import { OPEN_FUN_FACTS } from '../../lib/scroll.js'
 import Icon from '../ui/Icon.jsx'
@@ -56,7 +56,7 @@ function FunFacts() {
 
       <AnimatePresence initial={false}>
         {open && (
-          <motion.div
+          <m.div
             id="funzip-content"
             className="funzip-content"
             initial={{ height: 0, opacity: 0 }}
@@ -72,7 +72,7 @@ function FunFacts() {
                     {group.items.map((item) => {
                       const delay = 0.1 + itemNumber++ * 0.05
                       return (
-                        <motion.li
+                        <m.li
                           key={item.text}
                           initial={{ opacity: 0, y: 6 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -85,14 +85,14 @@ function FunFacts() {
                             <strong className="funzip-key">{item.key}</strong>
                             {item.text}
                           </span>
-                        </motion.li>
+                        </m.li>
                       )
                     })}
                   </ul>
                 </div>
               ))}
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </div>

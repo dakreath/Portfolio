@@ -1,4 +1,5 @@
-import { motion, useSpring } from 'framer-motion'
+import { forwardRef } from 'react'
+import { m, useSpring } from 'framer-motion'
 
 // A card that tilts in 3D toward the cursor.
 // It also sets --mx and --my (cursor position inside the card), which the
@@ -7,7 +8,11 @@ import { motion, useSpring } from 'framer-motion'
 // max:      how many degrees it can tilt
 // disabled: turn the tilt off
 // Any other props (initial, animate, whileHover...) go straight to framer-motion.
-function TiltCard({ children, className, max = 6, disabled = false, ...motionProps }) {
+// forwardRef: AnimatePresence (Projects) needs to reach the card's DOM node.
+const TiltCard = forwardRef(function TiltCard(
+  { children, className, max = 6, disabled = false, ...motionProps },
+  ref
+) {
   const rotateX = useSpring(0, { stiffness: 220, damping: 20 })
   const rotateY = useSpring(0, { stiffness: 220, damping: 20 })
 
@@ -33,7 +38,8 @@ function TiltCard({ children, className, max = 6, disabled = false, ...motionPro
   }
 
   return (
-    <motion.div
+    <m.div
+      ref={ref}
       className={className}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -41,8 +47,8 @@ function TiltCard({ children, className, max = 6, disabled = false, ...motionPro
       {...motionProps}
     >
       {children}
-    </motion.div>
+    </m.div>
   )
-}
+})
 
 export default TiltCard

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, m } from 'framer-motion'
 import { sections, site, socials, themes } from '../../data'
 import { useClipboard } from '../../hooks/useClipboard.js'
 import { asset } from '../../lib/asset.js'
@@ -117,14 +117,14 @@ function CommandPalette({ open, setOpen, setThemeId }) {
       <AnimatePresence>
         {open && (
           // Dark overlay behind the menu. Clicking it closes the menu.
-          <motion.div
+          <m.div
             className="cmdk-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onMouseDown={() => setOpen(false)}
           >
-            <motion.div
+            <m.div
               className="cmdk"
               role="dialog"
               aria-modal="true"
@@ -191,15 +191,15 @@ function CommandPalette({ open, setOpen, setThemeId }) {
                   <kbd>K</kbd> toggle
                 </span>
               </div>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         )}
       </AnimatePresence>
 
       {/* Small pop-up after "Copy email address" */}
       <AnimatePresence>
         {copied && (
-          <motion.div
+          <m.div
             className="toast"
             role="status"
             initial={{ opacity: 0, y: 20 }}
@@ -207,7 +207,7 @@ function CommandPalette({ open, setOpen, setThemeId }) {
             exit={{ opacity: 0, y: 20 }}
           >
             <Icon name="check2-circle" /> Email copied
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>
