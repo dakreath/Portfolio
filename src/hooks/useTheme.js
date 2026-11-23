@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { themes } from '../data'
+import { readStorage, writeStorage } from '../lib/storage.js'
 
 const STORAGE_KEY = 'theme'
 
-// The page background the visitor picked (black, grey or aurora).
+// The page background the visitor picked (white, mint or sage).
 // The choice is saved in the browser, so it's still there next visit.
 export function useTheme() {
   // Start with the default theme so it matches the prerendered HTML
@@ -25,21 +26,4 @@ export function useTheme() {
   }, [themeId])
 
   return [themeId, setThemeId]
-}
-
-// Browser storage can be blocked (for example in private windows), hence the try/catch
-function readStorage(key) {
-  try {
-    return localStorage.getItem(key)
-  } catch {
-    return null
-  }
-}
-
-function writeStorage(key, value) {
-  try {
-    localStorage.setItem(key, value)
-  } catch {
-    // not saved, but the theme still works for this visit
-  }
 }

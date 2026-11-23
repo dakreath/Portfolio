@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { readStorage, writeStorage } from '../lib/storage.js'
 
 const STORAGE_KEY = 'visitorName'
 
@@ -12,13 +13,8 @@ export function useVisitorName() {
     const params = new URLSearchParams(window.location.search)
     const nameFromLink = cleanName(params.get('name') ?? params.get('to'))
 
-    try {
-      if (nameFromLink) localStorage.setItem(STORAGE_KEY, nameFromLink)
-      setName(nameFromLink || cleanName(localStorage.getItem(STORAGE_KEY)))
-    } catch {
-      // storage blocked: still use the name from the link
-      setName(nameFromLink)
-    }
+    if (nameFromLink) writeStorage(STORAGE_KEY, nameFromLink)
+    setName(nameFromLink || cleanName(readStorage(STORAGE_KEY)))
   }, [])
 
   return name

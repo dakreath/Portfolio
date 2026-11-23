@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { counter, sendEmail } from '../../lib/contact.js'
+import { readStorage, writeStorage } from '../../lib/storage.js'
 
 // The two buttons. `key` is the name of the counter online.
 const buttons = [
@@ -20,13 +21,13 @@ function KudosButtons() {
     buttons.forEach(async ({ key }) => {
       const count = await counter('get', key)
       if (count !== null) setCounts((old) => ({ ...old, [key]: count }))
-      if (hasClicked(key)) setClicked((old) => ({ ...old, [key]: true }))
+      if (readStorage(`clicked-${key}`) === 'yes') setClicked((old) => ({ ...old, [key]: true }))
     })
   }, [])
 
   async function handleClick({ key, email }) {
     setClicked((old) => ({ ...old, [key]: true }))
-    rememberClick(key)
+    writeStorage(`clicked-${key}`, 'yes')
 
     const newCount = await counter('hit', key)
     // If the counter service is down, just add 1 on screen
@@ -52,23 +53,6 @@ function KudosButtons() {
       ))}
     </div>
   )
-}
-
-// Browser storage can be blocked (for example in private windows), hence the try/catch
-function hasClicked(key) {
-  try {
-    return localStorage.getItem(`clicked-${key}`) === 'yes'
-  } catch {
-    return false
-  }
-}
-
-function rememberClick(key) {
-  try {
-    localStorage.setItem(`clicked-${key}`, 'yes')
-  } catch {
-    // the button still works, it just isn't remembered
-  }
 }
 
 export default KudosButtons
