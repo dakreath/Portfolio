@@ -66,7 +66,7 @@ function Hero() {
             <img
               src={asset(site.photo.src)}
               srcSet={`${asset(site.photo.srcSmall)} 400w, ${asset(site.photo.src)} 800w`}
-              sizes="(max-width: 440px) 260px, 300px"
+              sizes="(max-width: 440px) 170px, 200px"
               width="800"
               height="800"
               alt={site.photo.alt}

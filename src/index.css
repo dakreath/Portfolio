@@ -618,9 +618,12 @@
   .hero-photo-wrap {
     position: relative;
     width: 100%;
-    max-width: 300px;
+    max-width: 200px;
     align-self: center;
-    justify-self: center;
+    justify-self: end;
+    /* Pull it past the page column, to 96px from the window edge on wide screens.
+       (100vw - column width) / 2 is the empty space beside the column. */
+    margin-right: min(0px, calc((min(100vw - 32px, 1100px) - 100vw) / 2 + 96px));
   }
   .hero-photo {
     position: relative;
@@ -652,7 +655,8 @@
     object-fit: cover;
   }
 
-  /* Chat-style greeting: the bubbles stack in a column just above the photo.
+  /* Chat-style greeting: a solved Tower of Hanoi above the photo. Each bubble is centered over
+     the head at its own width, shortest on top and longest at the bottom (the order in data/hero.js).
      It's anchored at the bottom, so each new bubble pushes the earlier ones up. */
   .greeting {
     position: absolute;
@@ -662,10 +666,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    transform: translateX(-50%);
     gap: 6px;
     width: max-content;
     max-width: min(320px, 90vw);
-    transform: translateX(-50%);
   }
   .greeting-hello,
   .greeting-msg,
@@ -1740,16 +1744,10 @@
   }
 
   .hero-photo-wrap {
-    max-width: min(100%, 260px);
-    justify-self: start;
+    max-width: min(100%, 170px);
+    justify-self: center; /* centered, so the bubble tower above it fits on screen */
     margin-top: 170px; /* room for the greeting bubbles stacked above the photo */
-  }
-
-  /* The photo sits on the left here, so the bubbles line up with its left edge to stay on screen */
-  .greeting {
-    left: 0;
-    align-items: flex-start;
-    transform: none;
+    margin-right: 0;
   }
 
   .about-grid {
