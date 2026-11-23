@@ -3,9 +3,10 @@ import Reveal from './Reveal.jsx'
 // A row of pill buttons, each with a colored dot and a count.
 // Used above Projects and Skills.
 // options: [{ id, label, count, tone }]  (tone picks the dot color, optional)
-function FilterBar({ options, value, onChange, label }) {
+// className: extra class for a different look (Projects uses "filter-bar--editorial")
+function FilterBar({ options, value, onChange, label, className = '' }) {
   return (
-    <Reveal className="filter-bar" delay={0.1}>
+    <Reveal className={`filter-bar ${className}`} delay={0.1}>
       <div role="group" aria-label={label} className="filter-bar-inner">
         {options.map((option) => {
           const isActive = value === option.id
