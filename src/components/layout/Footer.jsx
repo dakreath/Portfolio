@@ -1,8 +1,10 @@
 import { site } from '../../data'
+import { useModKey } from '../../hooks/useModKey.js'
 import Icon from '../ui/Icon.jsx'
 
 function Footer() {
   const year = new Date().getFullYear()
+  const modKey = useModKey() // "⌘" on Mac, "Ctrl" elsewhere
 
   return (
     <footer className="site-footer">
@@ -10,7 +12,7 @@ function Footer() {
         Built by {site.name} © {year}
       </span>
       <span className="footer-hint">
-        press <kbd>⌘</kbd>
+        press <kbd>{modKey}</kbd>
         <kbd>K</kbd> to jump anywhere
       </span>
       <button

@@ -6,9 +6,9 @@ export default {
   safelist: [
     'badge--completed',
     'badge--pending',
-    'dot--completed',
-    'dot--pending',
-    'dot--learning',
+    'dot--filled',
+    'dot--half',
+    'dot--empty',
     'skill--completed',
     'skill--pending',
     'skill--learning',
@@ -45,9 +45,6 @@ export default {
         display: ['"Geist Sans"', 'Geist', 'system-ui', 'sans-serif'],
         body: ['"Geist Sans"', 'Geist', 'system-ui', 'sans-serif'],
         mono: ['"Geist Mono"', 'ui-monospace', 'monospace'],
-        // Projects section: editorial serif titles (font-serif) and clean sans text (font-sans)
-        serif: ['Newsreader', 'Georgia', 'serif'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
     },
   },

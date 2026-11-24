@@ -17,6 +17,7 @@ function riseDelay(seconds) {
 function Hero() {
   return (
     <section className="hero" id="top">
+      <span className="commit-scatter" aria-hidden="true" />
       <div className="hero-grid">
         {/* The hero text fades and shrinks as you scroll down past it */}
         <ScrollFade className="hero-text">

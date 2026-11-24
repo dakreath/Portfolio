@@ -46,8 +46,8 @@ export const socials = [
 // and the "01 · about" numbers. numbered: false = no number.
 export const sections = [
   { id: 'about', label: 'About', icon: 'person' },
+  { id: 'projects', label: 'Projects', icon: 'grid' }, // right after About: "View my work" in the hero jumps here
   { id: 'journey', label: 'Milestones', icon: 'signpost-split' },
-  { id: 'projects', label: 'Projects', icon: 'grid' },
   { id: 'skills', label: 'Skills', icon: 'cpu' },
   { id: 'contact', label: 'Contact', icon: 'envelope', numbered: false },
 ]

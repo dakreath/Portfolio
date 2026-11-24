@@ -2,11 +2,12 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, m } from 'framer-motion'
 import { sections, site, socials, themes } from '../../data'
 import { useClipboard } from '../../hooks/useClipboard.js'
+import { useModKey } from '../../hooks/useModKey.js'
 import { asset } from '../../lib/asset.js'
 import { scrollToId } from '../../lib/scroll.js'
 import Icon from '../ui/Icon.jsx'
 
-// The ⌘K (Mac) / Ctrl+K (Windows) menu for jumping around the site.
+// The ⌘K (Mac) / Ctrl K (everywhere else) menu for jumping around the site.
 // Every command is built from data/site.js, so new sections or links show up here on their own.
 
 function downloadResume() {
@@ -36,7 +37,7 @@ function buildCommands({ copy, setThemeId }) {
       icon: 'send',
       run: () => (window.location.href = `mailto:${site.email}`),
     },
-    { group: 'Actions', label: 'Download resumé', icon: 'download', run: downloadResume },
+    { group: 'Actions', label: 'Download résumé', icon: 'download', run: downloadResume },
   ]
 
   const links = socials.map((social) => ({
@@ -57,6 +58,7 @@ function buildCommands({ copy, setThemeId }) {
 }
 
 function CommandPalette({ open, setOpen, setThemeId }) {
+  const modKey = useModKey() // "⌘" on Mac, "Ctrl" elsewhere
   const [query, setQuery] = useState('') // what the visitor typed
   const [selected, setSelected] = useState(0) // index of the highlighted command
   const inputRef = useRef(null)
@@ -187,7 +189,7 @@ function CommandPalette({ open, setOpen, setThemeId }) {
                   <kbd>↵</kbd> select
                 </span>
                 <span>
-                  <kbd>⌘</kbd>
+                  <kbd>{modKey}</kbd>
                   <kbd>K</kbd> toggle
                 </span>
               </div>

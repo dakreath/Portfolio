@@ -1,10 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { site } from '../../data'
 import { sendEmail } from '../../lib/contact.js'
 import Icon from '../ui/Icon.jsx'
 
+// How long the thank-you card stays before the empty form comes back
+const SENT_CARD_SECONDS = 6
+
 // Name + email + message, sent to my inbox.
-// After it sends, the form is replaced by a thank-you card showing what was sent.
+// After it sends, the form is replaced by a thank-you card showing what was sent,
+// which clears itself after a few seconds and brings back an empty form.
 function ContactForm() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -12,6 +16,13 @@ function ContactForm() {
   const [sending, setSending] = useState(false)
   const [failed, setFailed] = useState(false)
   const [sent, setSent] = useState(null) // the sent message, once it worked
+
+  // Clear the thank-you card a few seconds after sending
+  useEffect(() => {
+    if (!sent) return
+    const timer = setTimeout(() => setSent(null), SENT_CARD_SECONDS * 1000)
+    return () => clearTimeout(timer) // stop the timer if the card closes first
+  }, [sent])
 
   async function handleSubmit(event) {
     event.preventDefault() // stop the browser from reloading the page

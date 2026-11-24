@@ -68,12 +68,12 @@
 
   section {
     position: relative;
-    padding: clamp(72px, 10vw, 128px) 0;
+    padding: clamp(48px, 6vw, 80px) 0;
     scroll-margin-top: 80px;
   }
 
   .section-head {
-    margin-bottom: clamp(32px, 5vw, 56px);
+    margin-bottom: clamp(24px, 3.5vw, 40px);
   }
   .section-tag {
     display: inline-flex;
@@ -165,6 +165,7 @@
   .text-link {
     display: inline-flex;
     align-items: center;
+    min-height: 24px;
     gap: 6px;
     font-size: 0.85rem;
     font-weight: 600;
@@ -232,15 +233,22 @@
     border-radius: 50%;
     background: theme('colors.ink-dimmer');
   }
-  .dot--completed {
-    background: theme('colors.leaf');
+  /* Status dots (data/statuses.js): filled = done, half = in progress, empty = not started.
+     --dot sets the color, so each place can recolor them in one line. */
+  .dot {
+    --dot: theme('colors.leaf');
+    flex: none;
   }
-  .dot--learning {
-    background: theme('colors.ink');
+  .dot--filled {
+    background: var(--dot);
   }
-  .dot--pending {
+  .dot--half {
+    background: linear-gradient(90deg, var(--dot) 50%, transparent 50%);
+    box-shadow: inset 0 0 0 1.5px var(--dot);
+  }
+  .dot--empty {
     background: transparent;
-    box-shadow: inset 0 0 0 1px theme('colors.ink-dimmer');
+    box-shadow: inset 0 0 0 1.5px var(--dot);
   }
 
   .badge {
@@ -291,10 +299,19 @@
     color: theme('colors.ink');
     border-color: theme('colors.line');
   }
+  /* Selected: solid green with white text, much stronger than the hover outline */
   .filter.active {
-    color: theme('colors.ink');
-    border-color: var(--glass-border-strong);
-    background: rgb(12 26 18 / 0.042);
+    color: theme('colors.on-accent');
+    border-color: theme('colors.accent-soft');
+    background: theme('colors.accent-soft');
+    font-weight: 600;
+  }
+  .filter.active .filter-count {
+    background: rgb(255 255 255 / 0.22);
+    color: theme('colors.on-accent');
+  }
+  .filter.active .dot {
+    --dot: theme('colors.on-accent');
   }
   .filter-count {
     min-width: 1.25rem;
@@ -331,6 +348,12 @@
   .has-tip:focus-visible::before {
     opacity: 1;
     transform: translate(-50%, 0);
+  }
+  /* Same tooltip, opening below (for things at the top of the screen, like the theme dots) */
+  .has-tip--below::before {
+    top: calc(100% + 10px);
+    bottom: auto;
+    transform: translate(-50%, -4px);
   }
 
   /* ---------- Nav ---------- */
@@ -415,7 +438,7 @@
   .cmdk-trigger {
     display: inline-flex;
     align-items: center;
-    gap: 2px;
+    gap: 4px;
     height: 28px;
     padding: 0 8px;
     border-radius: 999px;
@@ -439,16 +462,23 @@
     gap: 8px;
   }
   .swatch {
-    width: 16px;
-    height: 16px;
+    position: relative;
+    width: 18px;
+    height: 18px;
     padding: 0;
     border-radius: 50%;
-    border: 1px solid theme('colors.line');
+    border: 1.5px solid rgb(12 26 18 / 0.35); /* visible even for the white dot on a white page */
     cursor: pointer;
     transition: transform 0.2s;
   }
   .swatch:hover {
     transform: scale(1.25);
+  }
+  .swatch::after {
+    /* invisible, larger click area: 18px dot + 4px each side = 26px */
+    content: '';
+    position: absolute;
+    inset: -4px;
   }
   .swatch.active {
     border-color: theme('colors.ink');
@@ -538,7 +568,7 @@
 
   /* ---------- Hero ---------- */
   .hero {
-    padding: clamp(72px, 11vw, 140px) 0 clamp(72px, 9vw, 112px);
+    padding: clamp(56px, 8vw, 104px) 0 clamp(48px, 6vw, 80px);
   }
   .hero-grid {
     display: grid;
@@ -621,9 +651,9 @@
     max-width: 200px;
     align-self: center;
     justify-self: end;
-    /* Pull it past the page column, to 96px from the window edge on wide screens.
-       (100vw - column width) / 2 is the empty space beside the column. */
-    margin-right: min(0px, calc((min(100vw - 32px, 1100px) - 100vw) / 2 + 96px));
+    /* Keep the photo 96px from the window edge at every width, so the bubble tower above it
+       (wider than the photo) never gets cut off. (100vw - column width) / 2 is the space beside the column. */
+    margin-right: calc((min(100vw - 32px, 1100px) - 100vw) / 2 + 96px);
   }
   .hero-photo {
     position: relative;
@@ -695,6 +725,10 @@
   }
   .greeting-close {
     display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    min-height: 24px;
     padding: 4px;
     border: 0;
     border-radius: 6px;
@@ -958,7 +992,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 28px;
+    gap: 48px;
   }
   .timeline-track {
     position: absolute;
@@ -973,20 +1007,92 @@
   .timeline-fill {
     position: absolute;
     inset: 0;
+    overflow: hidden;
     transform-origin: top;
     border-radius: 2px;
     background: theme('backgroundImage.brand-line-vertical');
+  }
+  /* A soft light that keeps flowing down the green part of the line */
+  .timeline-fill::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 30%;
+    background: linear-gradient(180deg, transparent, rgb(255 255 255 / 0.85), transparent);
+    animation: timeline-flow 2.8s linear infinite;
+  }
+  @keyframes timeline-flow {
+    from {
+      top: -30%;
+    }
+    to {
+      top: 100%;
+    }
+  }
+  /* The glowing dot at the end of the green part (moved by Journey.jsx as you scroll) */
+  .timeline-head {
+    position: absolute;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow:
+      0 0 0 3px rgb(74 222 128 / 0.25),
+      0 0 16px rgb(34 197 94 / 0.8);
+    transform: translate(-50%, -50%);
+    animation: timeline-pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes timeline-pulse {
+    50% {
+      box-shadow:
+        0 0 0 7px rgb(74 222 128 / 0.12),
+        0 0 24px rgb(34 197 94 / 0.9);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .timeline-fill::after,
+    .timeline-head {
+      animation: none;
+    }
+    .timeline-fill::after {
+      display: none;
+    }
   }
   .milestone {
     position: relative;
     width: 50%;
   }
   .milestone.left {
-    padding-right: 48px;
+    padding-right: 80px;
   }
   .milestone.right {
     margin-left: 50%;
-    padding-left: 48px;
+    padding-left: 80px;
+  }
+  /* Wider screens: the cards zigzag. Each card starts halfway down the card before it,
+     so there's no empty space beside each card.
+     How: the timeline is a two-column grid. Card 1 takes rows 1-2, card 2 takes rows 2-3,
+     card 3 takes rows 3-4, and so on (--row is the card's number, set in Journey.jsx).
+     Left and right cards take turns, so cards on the same side never overlap. */
+  @media (min-width: 761px) {
+    .timeline {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 128px 0; /* space between cards; no column gap, so both columns meet exactly at the middle line */
+    }
+    .milestone {
+      grid-row: var(--row) / span 2;
+      width: auto;
+    }
+    .milestone.left {
+      grid-column: 1;
+    }
+    .milestone.right {
+      grid-column: 2;
+      margin-left: 0;
+    }
   }
   .milestone-dot {
     position: absolute;
@@ -1011,7 +1117,7 @@
     left: -19px;
   }
   .milestone-card {
-    padding: 24px 26px;
+    padding: 24px 28px;
     transition:
       border-color 0.25s,
       transform 0.25s;
@@ -1019,6 +1125,54 @@
   .milestone-card:hover {
     transform: translateY(-3px);
     border-color: var(--glass-border-strong);
+  }
+  /* Clear green outline on every card; hovering a card (or tabbing to its link)
+     lights it up, draws a short line to its dot and makes the dot glow */
+  .milestone .milestone-card {
+    border: 1px solid rgb(22 163 74 / 0.3);
+    transition:
+      border-color 0.25s,
+      box-shadow 0.25s,
+      transform 0.25s;
+  }
+  .milestone:hover .milestone-card,
+  .milestone:focus-within .milestone-card {
+    transform: translateY(-3px);
+    border-color: #16a34a;
+    box-shadow:
+      0 0 0 3px rgb(34 197 94 / 0.12),
+      0 14px 32px -14px rgb(21 128 61 / 0.35);
+  }
+  /* The connector from the card to its dot: faint until the card is hovered */
+  .milestone::after {
+    content: '';
+    position: absolute;
+    top: 40px; /* level with the dot's center (dot top 22px + half of 38px) */
+    width: 61px; /* the gap between the card and the dot */
+    height: 2px;
+    border-radius: 2px;
+    background: rgb(22 163 74 / 0.18);
+    transition: background 0.25s;
+  }
+  .milestone.left::after {
+    right: 19px;
+  }
+  .milestone.right::after {
+    left: 19px;
+  }
+  .milestone:hover::after,
+  .milestone:focus-within::after {
+    background: theme('backgroundImage.brand-line');
+  }
+  .milestone .milestone-dot {
+    transition: box-shadow 0.25s;
+  }
+  .milestone:hover .milestone-dot,
+  .milestone:focus-within .milestone-dot {
+    box-shadow:
+      0 0 0 1px #070807,
+      0 0 0 6px rgb(74 222 128 / 0.25),
+      0 0 32px rgb(34 197 94 / 0.7);
   }
   .milestone-when {
     display: block;
@@ -1040,48 +1194,527 @@
     color: theme('colors.ink-dim');
   }
   .milestone-card .text-link {
-    margin-top: 12px;
+    margin-top: 8px;
   }
-  /* ---------- Projects ----------
-     The cards are styled with Tailwind classes in Projects.jsx. Here: the serif title and the
-     editorial filter pills. */
-  #projects .section-title {
-    font-family: theme('fontFamily.serif');
-    font-weight: 500;
-    letter-spacing: -0.01em;
+  /* ---------- Projects (components/sections/Projects.jsx) ----------
+     A full-width dark band: deep black-green, glass cards with thin green borders.
+     Same green family as the rest of the site (#16a34a, #22c55e, #4ade80) and the intro screen,
+     so the colors stay in harmony. All of them live here as variables. */
+  .projects-band {
+    --p-bg: #06120b;
+    --p-emerald: #4ade80; /* site light green: accents on dark */
+    --p-emerald-strong: #4ade80; /* button fill */
+    --p-text: #f0fdf4;
+    --p-text-dim: #a7bdb0;
+    --p-text-muted: #82978b;
+    --p-border: rgb(74 222 128 / 0.16);
+    --p-glass: rgb(255 255 255 / 0.035);
+    isolation: isolate; /* keeps the background below behind the cards, not behind the page */
+    padding-block: clamp(104px, 10vw, 136px); /* extra room so the content sits past the edge fades */
+    color: var(--p-text);
   }
-  .filter-bar--editorial .filter-bar-inner {
+  .projects-band {
+    --p-fade: clamp(200px, 20vw, 300px); /* how far the white -> pale green -> dark transition stretches at each end */
+    --p-reach: clamp(44px, 6vw, 76px); /* how far it starts inside the neighbours' empty padding */
+  }
+  .projects-band::before {
+    /* The background spans the whole window, not just the page column. It starts a little outside the
+       section at both ends (inside the neighbours' empty padding), so the transition spreads into them. */
+    content: '';
+    position: absolute;
+    inset: calc(-1 * var(--p-reach)) calc(50% - 50vw);
+    z-index: -1;
+    background:
+      /* soft glows, kept inside the dark part so their edges never get cut off */
+      radial-gradient(60% 260px at 50% calc(var(--p-fade) + 140px), rgb(22 163 74 / 0.16), transparent 70%),
+      radial-gradient(40% 220px at 90% calc(100% - var(--p-fade) - 160px), rgb(22 163 74 / 0.08), transparent 70%),
+      /* top end: one smooth curve from white through soft green to the dark (no visible edge or stripe) */
+      linear-gradient(180deg, rgb(255 255 255 / 0) 0%, rgb(255 255 255) 5%, rgb(253 254 253) 10%, rgb(249 252 250) 15%, rgb(243 249 244) 20%, rgb(233 243 236) 25%, rgb(220 235 224) 30%, rgb(203 224 209) 35%, rgb(184 209 191) 40%, rgb(163 192 171) 45%, rgb(140 171 149) 50%, rgb(117 147 126) 55%, rgb(93 123 102) 60%, rgb(72 98 80) 65%, rgb(52 75 60) 70%, rgb(35 55 42) 75%, rgb(23 39 29) 80%, rgb(14 28 19) 85%, rgb(8 21 14) 90%, rgb(6 18 11) 95%, rgb(6 18 11) 100%)
+        top / 100% var(--p-fade) no-repeat,
+      /* bottom end: the same, mirrored */
+      linear-gradient(0deg, rgb(255 255 255 / 0) 0%, rgb(255 255 255) 5%, rgb(253 254 253) 10%, rgb(249 252 250) 15%, rgb(243 249 244) 20%, rgb(233 243 236) 25%, rgb(220 235 224) 30%, rgb(203 224 209) 35%, rgb(184 209 191) 40%, rgb(163 192 171) 45%, rgb(140 171 149) 50%, rgb(117 147 126) 55%, rgb(93 123 102) 60%, rgb(72 98 80) 65%, rgb(52 75 60) 70%, rgb(35 55 42) 75%, rgb(23 39 29) 80%, rgb(14 28 19) 85%, rgb(8 21 14) 90%, rgb(6 18 11) 95%, rgb(6 18 11) 100%)
+        bottom / 100% var(--p-fade) no-repeat,
+      /* the dark middle */
+      linear-gradient(var(--p-bg), var(--p-bg)) center / 100% calc(100% - 2 * var(--p-fade) + 2px) no-repeat;
+  }
+  /* GitHub-style squares where the white blends into the dark: a faint contribution grid with some
+     cells lit in GitHub's greens. Two sets twinkle out of step. Decorative only (aria-hidden).
+     The 13px grid = 10px squares + 3px gaps, like GitHub's contribution graph.
+
+     How the squares are drawn: each url("data:image/svg+xml,...") below is a tiny picture with one or
+     two squares in it, repeated across the area like wallpaper. The pictures have odd sizes
+     (221, 299, 143...) so their repeats never line up, and the squares look scattered, not in rows. */
+  .projects-glitter {
+    position: absolute;
+    left: calc(50% - 50vw);
+    right: calc(50% - 50vw);
+    z-index: -1;
+    height: var(--p-fade);
+    pointer-events: none;
+    /* only the deeper half of the fade shows squares, fading in and out softly */
+    -webkit-mask-image: linear-gradient(180deg, transparent 38%, #000 62%, #000 88%, transparent);
+    mask-image: linear-gradient(180deg, transparent 38%, #000 62%, #000 88%, transparent);
+  }
+  .projects-glitter--top {
+    top: calc(-1 * var(--p-reach));
+  }
+  .projects-glitter--bottom {
+    bottom: calc(-1 * var(--p-reach));
+    transform: scaleY(-1); /* mirror: the squares sit in the dark part at this end too */
+  }
+  .projects-glitter::before,
+  .projects-glitter::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-position: 0 0;
+    background-repeat: repeat;
+    animation: glitter-twinkle 4.5s ease-in-out infinite;
+  }
+  .projects-glitter::before {
+    background-image:
+      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='221' height='91'><rect x='195' y='78' width='10' height='10' rx='2' fill='%23006d32'/></svg>"),
+      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='299' height='117'><rect x='182' y='13' width='10' height='10' rx='2' fill='%2326a641'/></svg>");
+  }
+  .projects-glitter::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-position: 0 0;
+    background-repeat: repeat;
+    animation: glitter-twinkle 4.5s ease-in-out infinite;
+  }
+  .projects-glitter::before {
+    background-image:
+      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='143' height='117'><rect x='78' y='26' width='10' height='10' rx='2' fill='%23006d32'/></svg>"),
+      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='169' height='78'><rect x='39' y='65' width='10' height='10' rx='2' fill='%2326a641'/><rect x='26' y='65' width='10' height='10' rx='2' fill='%230e4429'/></svg>");
+  }
+  .projects-glitter::after {
+    background-image:
+      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='247' height='104'><rect x='52' y='78' width='10' height='10' rx='2' fill='%23006d32'/></svg>"),
+      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='377' height='78'><rect x='13' y='0' width='10' height='10' rx='2' fill='%2326a641'/></svg>");
+    animation-delay: -2.25s; /* out of step with the first set */
+  }
+  /* the faint grid of empty cells underneath, plus a soft glow */
+  .projects-glitter {
+    background:
+      radial-gradient(45% 30% at 50% 78%, rgb(74 222 128 / 0.1), transparent 70%),
+      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='13' height='13'><rect x='0' y='0' width='10' height='10' rx='2' fill='%2339d353' fill-opacity='0.07'/></svg>") 0 0 / 13px 13px repeat;
+  }
+  /* A light scatter of small commit-graph squares across the white sections (hero, and Milestones down).
+     Spread over the whole width but sparse and pale, so it never crowds the text. Decorative only (aria-hidden). */
+  .commit-scatter {
+    position: absolute;
+    inset: 0 calc(50% - 50vw);
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.9;
+    /* full strength at the sides, dimmed to 30% in the middle where the text is */
+    -webkit-mask-image: linear-gradient(90deg, #000, rgb(0 0 0 / 0.3) 18%, rgb(0 0 0 / 0.3) 82%, #000);
+    mask-image: linear-gradient(90deg, #000, rgb(0 0 0 / 0.3) 18%, rgb(0 0 0 / 0.3) 82%, #000);
+  }
+  .commit-scatter::before,
+  .commit-scatter::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-repeat: repeat;
+    animation: glitter-twinkle 7s ease-in-out infinite;
+  }
+  .commit-scatter::before {
+    /* sparse: roughly 10 squares per screen, never lined up */
+    background-image:
+      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='451' height='517'><rect x='143' y='132' width='7' height='7' rx='1.5' fill='%2340c463' fill-opacity='0.75'/></svg>"),
+      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='583' height='407'><rect x='286' y='99' width='7' height='7' rx='1.5' fill='%2330a14e' fill-opacity='0.75'/></svg>");
+    background-position: 55px 33px, 385px 132px;
+  }
+  .commit-scatter::after {
+    background-image:
+      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='517' height='473'><rect x='330' y='440' width='7' height='7' rx='1.5' fill='%23216e39' fill-opacity='0.6'/></svg>"),
+      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='407' height='583'><rect x='22' y='550' width='7' height='7' rx='1.5' fill='%2340c463' fill-opacity='0.6'/></svg>");
+    background-position: 308px 110px, 319px 242px;
+    animation-delay: -3.5s;
+  }
+  @keyframes glitter-twinkle {
+    0%,
+    100% {
+      opacity: 0.25;
+    }
+    50% {
+      opacity: 0.75;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .projects-glitter::before,
+    .projects-glitter::after {
+      animation: none;
+      opacity: 0.7;
+    }
+  }
+
+  .projects-band .section-tag {
+    color: var(--p-emerald);
+  }
+  .projects-band .section-title {
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    color: var(--p-text);
+  }
+  .projects-title-accent {
+    background: linear-gradient(100deg, #4ade80, #22c55e);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Filters */
+  .filter-bar--dark .filter-bar-inner {
     margin-left: 0;
   }
-  .filter-bar--editorial .filter {
-    padding: 6px 14px;
-    border-color: theme('colors.line');
-    background: theme('colors.surface');
-    font-family: theme('fontFamily.sans');
+  .filter-bar--dark .filter {
+    padding: 7px 16px;
+    border-color: var(--p-border);
+    background: var(--p-glass);
+    font-size: 0.85rem;
+    color: var(--p-text-dim);
+  }
+  .filter-bar--dark .filter:hover {
+    border-color: rgb(74 222 128 / 0.45);
+    color: var(--p-text);
+  }
+  /* Selected: solid light green with dark text, much stronger than the hover outline */
+  .filter-bar--dark .filter.active {
+    border-color: var(--p-emerald);
+    background: var(--p-emerald);
+    color: #052e16;
+    font-weight: 600;
+    box-shadow: 0 0 18px -4px rgb(74 222 128 / 0.45);
+  }
+  .filter-bar--dark .filter.active .dot {
+    --dot: #052e16;
+  }
+  .filter-bar--dark .filter-count {
+    background: rgb(255 255 255 / 0.08);
+    color: var(--p-text-dim);
+  }
+  .filter-bar--dark .filter.active .filter-count {
+    background: rgb(5 46 22 / 0.16);
+    color: #052e16;
+  }
+  .projects-band .dot {
+    --dot: var(--p-emerald);
+  }
+
+  /* Grid: 1 column on phones, 2 on tablets, 3 on laptops. Cards in a row share one height. */
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  @media (min-width: 768px) {
+    .project-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1024px) {
+    .project-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .project-cell {
+    display: flex; /* lets the card fill the row height */
+  }
+
+  /* Card: flat and quiet. It lifts and its border lights up on hover,
+     and the same happens when a keyboard user tabs into it (:focus-within). */
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid rgb(255 255 255 / 0.07);
+    border-radius: 16px;
+    background: rgb(255 255 255 / 0.025);
+    transition:
+      transform 0.3s ease,
+      border-color 0.3s ease,
+      background 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  .project-card:hover,
+  .project-card:focus-within {
+    transform: translateY(-4px);
+    border-color: rgb(74 222 128 / 0.4);
+    background: rgb(255 255 255 / 0.04);
+    box-shadow: 0 18px 40px -24px rgb(22 163 74 / 0.6);
+  }
+
+  /* Screenshot area, with the status pill on top */
+  .project-preview {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 10;
+    margin: 10px 10px 0;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #0b1d12;
+    color: inherit;
+    text-decoration: none;
+  }
+  /* "Open live demo" hint: hidden until the screenshot is hovered */
+  .project-preview-hint {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgb(6 18 11 / 0.72); /* dims the screenshot so the hint is easy to read */
     font-size: 0.82rem;
-    font-weight: 500;
-    color: theme('colors.ink-dim');
+    font-weight: 600;
+    color: var(--p-emerald);
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease;
   }
-  .filter-bar--editorial .filter:hover {
-    border-color: theme('colors.accent');
-    color: theme('colors.accent-soft');
+  a.project-preview:hover .project-preview-hint {
+    opacity: 1;
+    transform: none;
   }
-  .filter-bar--editorial .filter.active {
-    border-color: theme('colors.accent-soft');
-    background: theme('colors.accent-soft');
-    color: theme('colors.on-accent');
+  .project-preview img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    /* toned down so bright screenshots don't fight the dark band; full color on hover/focus */
+    filter: brightness(0.8) saturate(0.75);
+    transition:
+      transform 0.6s ease,
+      filter 0.4s ease;
   }
-  .filter-bar--editorial .filter-count {
-    background: theme('colors.surface-2');
-    color: theme('colors.ink-dim');
+  .project-card:hover .project-preview img,
+  .project-card:focus-within .project-preview img {
+    filter: none;
   }
-  .filter-bar--editorial .filter.active .filter-count {
-    background: rgb(255 255 255 / 0.2);
-    color: theme('colors.on-accent');
+  a.project-preview:hover img {
+    transform: scale(1.04);
   }
-  .filter-bar--editorial .filter.active .dot--pending {
-    box-shadow: inset 0 0 0 1px theme('colors.on-accent');
+  /* Cover for projects without a screenshot yet: the project name on a green gradient.
+     The gradient follows the status: brighter when in progress, quieter when upcoming. */
+  .project-cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 6px;
+    height: 100%;
+    padding: 18px 20px;
+    background:
+      radial-gradient(90% 80% at 100% 0%, rgb(74 222 128 / 0.35), transparent 60%),
+      linear-gradient(135deg, #0b2a18, #15803d);
   }
+  .project-cover--in-progress {
+    background:
+      radial-gradient(90% 80% at 100% 0%, rgb(134 239 172 / 0.45), transparent 60%),
+      linear-gradient(135deg, #0d3b20, #16a34a);
+  }
+  .project-cover--upcoming {
+    background:
+      radial-gradient(90% 80% at 100% 0%, rgb(74 222 128 / 0.18), transparent 60%),
+      linear-gradient(135deg, #08170e, #14532d);
+  }
+  .project-cover-title {
+    font-size: clamp(1.3rem, 2.2vw, 1.6rem);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #f0fdf4;
+  }
+  .project-cover-category {
+    font-family: theme('fontFamily.mono');
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgb(240 253 244 / 0.7);
+  }
+  .project-status {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 9px;
+    border: 1px solid rgb(255 255 255 / 0.08);
+    border-radius: 999px;
+    background: rgb(6 18 11 / 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    font-family: theme('fontFamily.mono');
+    font-size: 0.7rem;
+    color: var(--p-text-dim);
+  }
+  .project-status--completed {
+    border-color: rgb(74 222 128 / 0.4);
+    color: var(--p-emerald);
+  }
+
+  /* Text */
+  .project-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 18px 20px 20px;
+  }
+  .project-category {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 10px;
+    font-family: theme('fontFamily.mono');
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--p-emerald);
+  }
+  .project-number {
+    color: var(--p-text-muted);
+  }
+  .project-title {
+    margin: 0 0 8px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--p-text);
+  }
+  .project-description {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--p-text-dim);
+  }
+  .project-role {
+    margin: 12px 0 0;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: var(--p-text);
+  }
+  .project-role span {
+    color: var(--p-emerald);
+  }
+
+  /* Tech stack: one quiet line, like "React · Tailwind CSS" */
+  .project-stack {
+    margin: 14px 0 0;
+    font-family: theme('fontFamily.mono');
+    font-size: 0.72rem;
+    line-height: 1.6;
+    color: var(--p-text-muted);
+  }
+
+  /* Buttons: "View code" is the main one, "Live demo" is outlined.
+     margin-top: auto pushes them to the bottom so they line up across cards. */
+  .project-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 18px;
+    margin-top: auto;
+    padding-top: 18px;
+  }
+  .project-no-links {
+    font-family: theme('fontFamily.mono');
+    font-size: 0.75rem;
+    color: var(--p-text-muted);
+  }
+  .project-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 36px;
+    padding: 0 14px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+      background 0.2s,
+      border-color 0.2s,
+      box-shadow 0.2s,
+      transform 0.2s;
+  }
+  .project-btn:hover {
+    transform: translateY(-1px);
+  }
+  .project-btn:focus-visible {
+    outline: 2px solid var(--p-emerald);
+    outline-offset: 3px;
+  }
+  .project-btn--code {
+    background: var(--p-emerald-strong);
+    color: #052e16; /* deep green text on light green: high contrast */
+  }
+  .project-btn--code:hover {
+    background: #86efac;
+    box-shadow: 0 0 22px -4px rgb(74 222 128 / 0.6);
+  }
+  .project-btn--demo {
+    padding: 0;
+    color: var(--p-emerald);
+  }
+  .project-btn--demo:hover {
+    transform: none;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .project-btn--demo svg {
+    transition: transform 0.2s;
+  }
+  .project-btn--demo:hover svg {
+    transform: translate(2px, -2px);
+  }
+
+  /* "More projects?" banner */
+  .projects-more {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 24px;
+    margin-top: 40px;
+    padding: 24px 28px;
+    border: 1px solid var(--p-border);
+    border-radius: 18px;
+    background:
+      radial-gradient(80% 120% at 0% 50%, rgb(22 163 74 / 0.12), transparent 70%),
+      var(--p-glass);
+  }
+  .projects-more-title {
+    margin: 0 0 4px;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--p-text);
+  }
+  .projects-more-text {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--p-text-dim);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-card:hover,
+    .project-card:focus-within,
+    .project-btn:hover {
+      transform: none;
+    }
+    a.project-preview:hover img {
+      transform: none;
+    }
+  }
+
   /* ---------- Skills ---------- */
   .skills-grid {
     display: grid;
@@ -1132,14 +1765,33 @@
   /* ---------- Contact + footer ---------- */
   .contact-box {
     position: relative;
-    padding: clamp(48px, 8vw, 88px) clamp(16px, 3vw, 32px);
+    padding: clamp(32px, 5vw, 56px) clamp(16px, 3vw, 32px);
     border-radius: 32px;
     border: 1px solid var(--glass-border);
     background:
       radial-gradient(120% 80% at 50% 0%, rgb(34 197 94 / 0.22), transparent 60%),
-      radial-gradient(80% 60% at 50% 100%, rgb(21 128 61 / 0.14), transparent 70%), rgb(12 26 18 / 0.014);
+      radial-gradient(80% 60% at 50% 100%, rgb(21 128 61 / 0.14), transparent 70%),
+      rgb(255 255 255 / 0.92); /* soft white base: the commit squares show around the card, not through it */
     box-shadow: var(--glass-highlight);
     text-align: center;
+  }
+  /* "I commit." above the Contact heading: small, quiet, with a short line on each side */
+  .contact-box .contact-promise {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 18px;
+    font-family: theme('fontFamily.mono');
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    color: theme('colors.accent-soft');
+  }
+  .contact-box .contact-promise::before,
+  .contact-box .contact-promise::after {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: theme('backgroundImage.brand-line');
   }
   .contact-box h2 {
     margin: 0 0 16px;
@@ -1149,7 +1801,7 @@
   }
   .contact-box p {
     max-width: 480px;
-    margin: 0 auto 32px;
+    margin: 0 auto 24px;
     line-height: 1.6;
     color: theme('colors.ink-dim');
   }
@@ -1164,9 +1816,9 @@
   .contact-form {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 14px;
     /* Fills the contact card, edge to edge inside its padding */
-    margin: 40px 0 0;
+    margin: 28px 0 0;
     padding: clamp(18px, 3vw, 32px);
     border-radius: 24px;
     border: 1px solid var(--glass-border);
@@ -1399,6 +2051,7 @@
     color: theme('colors.ink-dimmer');
   }
   .footer-top {
+    min-height: 24px;
     padding: 0;
     border: 0;
     background: none;
@@ -1774,6 +2427,13 @@
   .milestone.right .milestone-dot {
     left: 0;
     right: auto;
+  }
+
+  .milestone.left::after,
+  .milestone.right::after {
+    left: 38px;
+    right: auto;
+    width: 18px;
   }
 }
 

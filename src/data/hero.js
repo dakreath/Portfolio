@@ -8,7 +8,7 @@ export const hero = {
     highlight: 'building software that ships.',
   },
   intro:
-    "I'm a second-year Software Engineering student at McGill who first learned to code in Kakuma refugee camp. I'm an aspiring full-stack engineer: React and Tailwind on the front end, learning FastAPI on the back end, and building Gambella Marketplace, an e-commerce platform, with two teammates.",
+    "Second-year Software Engineering student at McGill who learned to code in Kakuma refugee camp. I build React and Tailwind frontends, I'm learning FastAPI for the backend, and I'm looking for a software engineering internship.",
   // Chat bubbles that pop up next to the photo.
   // `target` is the section to scroll to, or 'fun-facts' to open the fun facts box.
   greeting: {
@@ -23,7 +23,7 @@ export const hero = {
   },
   actions: [
     { label: 'View my work', href: '#projects', icon: 'arrow-down-short', variant: 'primary' },
-    { label: 'My moves', href: '#journey', icon: 'signpost-split', variant: 'secondary' }, // the Milestones timeline
+    { label: 'Milestones', href: '#journey', icon: 'signpost-split', variant: 'secondary' },
     { label: 'Get in touch', href: `mailto:${site.email}`, variant: 'secondary' },
   ],
 }

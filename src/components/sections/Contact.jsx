@@ -11,7 +11,10 @@ function Contact() {
 
   return (
     <section id="contact">
+      <span className="commit-scatter" aria-hidden="true" />
       <Reveal className="contact-box">
+        {/* A small promise right before the call to action */}
+        <p className="contact-promise">I commit.</p>
         <h2>
           Let's build something
           <br />

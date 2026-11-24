@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { site } from '../../data'
 import Icon from '../ui/Icon.jsx'
 
@@ -10,6 +10,12 @@ import Icon from '../ui/Icon.jsx'
 
 function IntroCover() {
   const [leaving, setLeaving] = useState(false)
+  const openButton = useRef(null)
+
+  // Keyboard and screen reader users start on the open button while the cover is showing
+  useEffect(() => {
+    if (document.documentElement.classList.contains('intro')) openButton.current?.focus()
+  }, [])
 
   // Fade out, then show the portfolio. The 400ms matches the fade in index.css.
   function openPortfolio() {
@@ -54,7 +60,13 @@ function IntroCover() {
       </p>
       <p className="intro-name">{site.name} · Software Engineering · McGill University</p>
 
-      <button type="button" className="intro-open" onClick={openPortfolio} aria-label="Open my portfolio">
+      <button
+        ref={openButton}
+        type="button"
+        className="intro-open"
+        onClick={openPortfolio}
+        aria-label="Open my portfolio"
+      >
         <Icon name="arrow-right" />
       </button>
       <p className="intro-hint">click to open my portfolio</p>

@@ -53,12 +53,7 @@ export const skills = {
   ],
 }
 
-// Labels for the status filter buttons
-export const skillStatuses = {
-  completed: { label: 'Comfortable' },
-  learning: { label: 'Learning' },
-  pending: { label: 'Up next' },
-}
+// Status labels live in data/statuses.js
 
 // The lists below are built from the data above. No need to edit them.
 

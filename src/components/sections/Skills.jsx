@@ -5,11 +5,11 @@ import FilterBar from '../ui/FilterBar.jsx'
 import Reveal from '../ui/Reveal.jsx'
 import SectionHeading from '../ui/SectionHeading.jsx'
 
-// One filter button per status (Completed, Pending, Learning), each with its count
+// One filter button per status (Comfortable, Learning, Up Next), each with its count
 const filterOptions = Object.entries(skillStatuses).map(([statusId, status]) => ({
   id: statusId,
   label: status.label,
-  tone: statusId,
+  icon: status.icon,
   count: allSkills.filter((skill) => skill.status === statusId).length,
 }))
 
@@ -25,6 +25,7 @@ function Skills() {
 
   return (
     <section id="skills">
+      <span className="commit-scatter" aria-hidden="true" />
       <SectionHeading id="skills" title={skills.title} />
       <FilterBar
         label="Highlight skills by status"

@@ -2,8 +2,8 @@
 export const about = {
   title: 'About me',
   paragraphs: [
-    "It started as something I nearly missed. I was in Kakuma refugee camp, Kenya, and had to compete for a seat in a free vocational training center's HTML, CSS, and JavaScript course. At first, the syntax felt impenetrable — abstract, almost arcane. Then the logic clicked into place, and what I'd expected to be tedious became genuinely absorbing. Four years on, what began by chance has become the foundation my career — and much of my resolve — is built on.",
-    "Today I'm a second-year Software Engineering student at McGill. Outside of class, I volunteered with the McGill Tech Fair and served as technical lead on a Riipen Labs group project. I'm drawn to teams that treat craft as seriously as they treat deadlines.",
+    "I'm a second-year Software Engineering student at McGill, and I like turning fuzzy ideas into working software. Right now that means building Gambella Marketplace, an e-commerce platform, with two teammates, and learning FastAPI so I can own the backend too. In class, Java and software systems are what I enjoy most.",
+    "Outside class, I was technical lead on a Riipen Labs group project, volunteered with the McGill Tech Fair, and recently took McGill's two-day LLM workshop on single- and multi-agent systems. I ask questions until the goal is clear, I'm always willing to learn, and I'm drawn to teams that treat craft as seriously as deadlines.",
   ],
 }
 
@@ -29,11 +29,6 @@ export const funFacts = {
           text: 'I have all kinds of good jokes to make you laugh, especially in my free time.',
         },
         { emoji: '🐍', key: 'Favorite languages', text: 'Python and Java, more than anything else.' },
-        {
-          emoji: '🧑🏾‍🏫',
-          key: 'Happy to help',
-          text: 'I like helping classmates and sharing what I’ve learned.',
-        },
         {
           emoji: '🧩',
           key: 'Clarity-driven',

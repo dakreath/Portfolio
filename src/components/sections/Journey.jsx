@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { m, useScroll, useSpring } from 'framer-motion'
+import { m, useScroll, useSpring, useTransform } from 'framer-motion'
 import { journey, journeyTypes } from '../../data'
 import FilterBar from '../ui/FilterBar.jsx'
 import Icon from '../ui/Icon.jsx'
@@ -28,15 +28,19 @@ function Journey() {
   // progress goes from 0 to 1 while the timeline moves up the screen.
   const { scrollYProgress } = useScroll({ target: timelineRef, offset: ['start 75%', 'end 60%'] })
   const lineHeight = useSpring(scrollYProgress, { stiffness: 100, damping: 25 })
+  // A glowing dot rides the end of the green part of the line
+  const headTop = useTransform(lineHeight, (progress) => `${progress * 100}%`)
 
   return (
     <section id="journey">
+      <span className="commit-scatter" aria-hidden="true" />
       <SectionHeading id="journey" title={journey.title} />
       <FilterBar label="Filter milestones" options={filterOptions} value={filter} onChange={setFilter} />
 
       <div className="timeline" ref={timelineRef}>
         <div className="timeline-track" aria-hidden="true">
           <m.div className="timeline-fill" style={{ scaleY: lineHeight }} />
+          <m.span className="timeline-head" style={{ top: headTop }} />
         </div>
 
         {visibleMilestones.map((milestone, i) => {
@@ -47,6 +51,7 @@ function Journey() {
             <m.div
               className={`milestone ${side}`}
               key={milestone.title}
+              style={{ '--row': i + 1 }} // the card's number, used for the zigzag layout (see .timeline in index.css)
               initial={{ opacity: 0, x: side === 'right' ? 40 : -40 }} // slide in from its own side
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.4 }}

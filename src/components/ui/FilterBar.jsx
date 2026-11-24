@@ -2,7 +2,7 @@ import Reveal from './Reveal.jsx'
 
 // A row of pill buttons, each with a colored dot and a count.
 // Used above Projects and Skills.
-// options: [{ id, label, count, tone }]  (tone picks the dot color, optional)
+// options: [{ id, label, count, icon }]  (icon: 'filled' | 'half' | 'empty', optional)
 // className: extra class for a different look (Projects uses "filter-bar--editorial")
 function FilterBar({ options, value, onChange, label, className = '' }) {
   return (
@@ -18,7 +18,7 @@ function FilterBar({ options, value, onChange, label, className = '' }) {
               aria-pressed={isActive}
               onClick={() => onChange(option.id)}
             >
-              {option.tone && <span className={`dot dot--${option.tone}`} />}
+              {option.icon && <span className={`dot dot--${option.icon}`} aria-hidden="true" />}
               {option.label}
               <span className="filter-count">{option.count}</span>
             </button>

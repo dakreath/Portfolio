@@ -51,8 +51,8 @@ function App() {
           <Hero />
           <TechStrip />
           <About />
-          <Journey />
           <Projects />
+          <Journey />
           <Skills />
           <Contact />
         </main>

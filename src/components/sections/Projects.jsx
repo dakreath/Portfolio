@@ -1,12 +1,25 @@
 import { forwardRef, useState } from 'react'
 import { AnimatePresence, m } from 'framer-motion'
-import { projects, projectStatuses } from '../../data'
+import { projects, projectStatuses, socials } from '../../data'
+import { asset } from '../../lib/asset.js'
 import FilterBar from '../ui/FilterBar.jsx'
 import Icon from '../ui/Icon.jsx'
 import SectionHeading from '../ui/SectionHeading.jsx'
+import Reveal from '../ui/Reveal.jsx'
+
+// The dark "My Projects" section. Everything on the cards comes from data/projects.js;
+// the styles are under "Projects" in index.css.
+
+// Show the most finished work first: completed projects with a screenshot, then other completed ones,
+// then in progress, then upcoming. Within a group, the order from data/projects.js is kept.
+function rank(project) {
+  if (project.status === 'completed') return project.image ? 0 : 1
+  return project.status === 'in-progress' ? 2 : 3
+}
+const sortedProjects = [...projects.items].sort((a, b) => rank(a) - rank(b))
 
 // Give each project a number from its position: 01, 02, ...
-const numberedProjects = projects.items.map((project, i) => ({
+const numberedProjects = sortedProjects.map((project, i) => ({
   ...project,
   number: String(i + 1).padStart(2, '0'),
 }))
@@ -17,105 +30,139 @@ const filterOptions = [
   ...Object.entries(projectStatuses).map(([statusId, status]) => ({
     id: statusId,
     label: status.label,
-    tone: status.tone,
+    icon: status.icon,
     count: numberedProjects.filter((project) => project.status === statusId).length,
   })),
 ]
 
-// The color of each card's thick top border (the `accent` in data/projects.js).
-// Written out in full so Tailwind can find the class names.
-const accentBorders = {
-  green: 'border-t-accent', // web builds
-  deep: 'border-t-leaf-deep', // apps and leadership
-  light: 'border-t-[#4ade80]', // in progress
-  muted: 'border-t-line', // upcoming
-}
+const github = socials.find((social) => social.id === 'github')
 
-// Keyboard focus ring for the links on a card
-const focusRing = 'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
+// The screenshot area: a link when the project has one, a plain box otherwise
+function PreviewWrapper({ href, label, children }) {
+  if (!href) return <div className="project-preview">{children}</div>
+  return (
+    <a
+      className="project-preview"
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      tabIndex={-1}
+    >
+      {children}
+    </a>
+  )
+}
 
 const ProjectCard = forwardRef(function ProjectCard({ project, index }, ref) {
   const status = projectStatuses[project.status]
-  const isDone = project.status === 'completed'
   const { code, demo } = project.links ?? {}
+  const previewLink = demo || code // clicking the screenshot opens the demo, or the code if there's no demo
 
   return (
     // The outer box only animates: it fades in on scroll and slides into place when the filter changes
     <m.div
       ref={ref}
       layout
+      className="project-cell"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={{ once: true, amount: 0.15 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.5, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* The card itself */}
-      <article
-        className={`rounded-xl border border-t-4 border-line ${accentBorders[project.accent] ?? accentBorders.muted} bg-surface p-7 font-sans transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_12px_30px_-10px_rgba(21,128,61,0.18)] motion-reduce:hover:translate-y-0`}
-      >
-        {/* Top row: number + category on the left, status on the right */}
-        <div className="mb-5 flex items-start justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <span
-              className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md font-mono text-[11px] font-medium ${
-                isDone ? 'bg-leaf-deep text-on-accent' : 'border border-line text-ink-dimmer'
-              }`}
-            >
-              {project.number}
-            </span>
-            <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-accent-soft">
-              {project.category}
-            </span>
-          </div>
-          <span className="shrink-0 whitespace-nowrap rounded-full border border-line bg-white px-2.5 py-0.5 text-[11px] font-medium text-ink-dim">
-            {status.badge}
+      <article className="project-card" aria-labelledby={`project-${project.slug}`}>
+        {/* Screenshot, or a designed cover (name on a green gradient) until there is one.
+            When there's a link, the whole screenshot is clickable. tabIndex -1: keyboard users
+            already reach the same link through the buttons below, so it isn't a second stop. */}
+        <PreviewWrapper
+          href={previewLink}
+          label={
+            demo
+              ? `Live demo of ${project.title} (opens in a new tab)`
+              : `Code for ${project.title} on GitHub (opens in a new tab)`
+          }
+        >
+          {project.image ? (
+            <img
+              src={asset(project.image.src)}
+              alt={project.image.alt}
+              width="960"
+              height="600"
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            <div className={`project-cover project-cover--${project.status}`}>
+              <span className="project-cover-title" aria-hidden="true">
+                {project.title}
+              </span>
+              <span className="project-cover-category" aria-hidden="true">
+                {project.category}
+              </span>
+            </div>
+          )}
+          <span className={`project-status project-status--${project.status}`}>
+            <span className={`dot dot--${status.icon}`} aria-hidden="true" />
+            {status.label}
           </span>
-        </div>
+          {previewLink && (
+            <span className="project-preview-hint" aria-hidden="true">
+              {demo ? 'Open live demo' : 'View code'} <Icon name="arrow-up-right" />
+            </span>
+          )}
+        </PreviewWrapper>
 
-        <h3 className="m-0 font-serif text-2xl font-normal leading-tight text-ink md:text-[26px]">
-          {project.title}
-        </h3>
-        <p className="mb-0 mt-2 text-[13.5px] font-semibold leading-snug text-ink">{project.summary}</p>
-        <p className="mb-0 mt-3 text-[14.5px] leading-relaxed text-ink-dim">{project.description}</p>
+        <div className="project-body">
+          <p className="project-category">
+            <span className="project-number">{project.number}</span>
+            {project.category}
+          </p>
+          <h3 id={`project-${project.slug}`} className="project-title">
+            {project.title}
+          </h3>
+          <p className="project-description">{project.description}</p>
 
-        {/* Tech stack */}
-        <ul className="m-0 mt-5 flex list-none flex-wrap gap-2 p-0" aria-label="Tech stack">
-          {project.stack.map((tech) => (
-            <li
-              key={tech}
-              className="rounded-full border border-line bg-surface-2 px-2.5 py-1 font-mono text-[11px] text-leaf-deep"
-            >
-              {tech}
-            </li>
-          ))}
-        </ul>
+          {/* What I did on this project */}
+          {project.role && (
+            <p className="project-role">
+              <span>My role · </span>
+              {project.role}
+            </p>
+          )}
 
-        {/* Links, only when the project has them */}
-        {(demo || code) && (
-          <div className="mt-6 flex flex-wrap items-center gap-5 border-t border-line pt-5">
-            {demo && (
-              <a
-                className={`inline-flex items-center gap-2 rounded-full bg-accent-soft px-4 py-2 text-[13px] font-medium text-on-accent no-underline transition-colors hover:bg-leaf-deep ${focusRing}`}
-                href={demo}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Icon name="play-circle" /> Live demo
-              </a>
-            )}
+          <p className="project-stack">
+            <span className="sr-only">Tech stack: </span>
+            {project.stack.join(' · ')}
+          </p>
+
+          {/* Buttons when the project has links; a short note otherwise, so every card has the same parts */}
+          <div className="project-actions">
+            {!code && !demo && <span className="project-no-links">Links coming soon</span>}
             {code && (
               <a
-                className={`inline-flex items-center gap-1.5 rounded text-[13px] font-medium text-accent-soft underline-offset-4 hover:underline ${focusRing}`}
+                className="project-btn project-btn--code"
                 href={code}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`Code for ${project.title} on GitHub (opens in a new tab)`}
               >
-                View code <span aria-hidden="true">↗</span>
+                <Icon name="github" /> View code
+              </a>
+            )}
+            {demo && (
+              <a
+                className="project-btn project-btn--demo"
+                href={demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Live demo of ${project.title} (opens in a new tab)`}
+              >
+                Live demo <Icon name="arrow-up-right" />
               </a>
             )}
           </div>
-        )}
+        </div>
       </article>
     </m.div>
   )
@@ -128,25 +175,54 @@ function Projects() {
     filter === 'all' ? numberedProjects : numberedProjects.filter((project) => project.status === filter)
 
   return (
-    <section id="projects" className="text-ink">
-      <SectionHeading id="projects" title={projects.title} />
+    <section id="projects" className="projects-band">
+      {/* Decorative glitter at both ends of the dark band (styles: "Glitter" in index.css) */}
+      <span className="projects-glitter projects-glitter--top" aria-hidden="true" />
+      <span className="projects-glitter projects-glitter--bottom" aria-hidden="true" />
+      <SectionHeading
+        id="projects"
+        title={
+          <>
+            {projects.title.lead} <span className="projects-title-accent">{projects.title.accent}</span>
+          </>
+        }
+      />
       <FilterBar
-        className="filter-bar--editorial"
+        className="filter-bar--dark"
         label="Filter projects"
         options={filterOptions}
         value={filter}
         onChange={setFilter}
       />
 
-      {/* Two columns on wider screens. items-start lets each card keep its own height.
+      {/* One column on phones, two on tablets, three on laptops.
           layout + AnimatePresence: cards slide into place when the filter changes. */}
-      <m.div className="grid grid-cols-1 items-start gap-6 md:grid-cols-2" layout>
+      <m.div className="project-grid" layout>
         <AnimatePresence mode="popLayout">
           {visibleProjects.map((project, i) => (
             <ProjectCard key={project.slug} project={project} index={i} />
           ))}
         </AnimatePresence>
       </m.div>
+
+      {/* "More projects?" banner */}
+      {github && (
+        <Reveal className="projects-more">
+          <div>
+            <p className="projects-more-title">More projects?</p>
+            <p className="projects-more-text">See everything else I build on GitHub.</p>
+          </div>
+          <a
+            className="project-btn project-btn--code"
+            href={github.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Visit my GitHub (opens in a new tab)"
+          >
+            <Icon name="github" /> Visit my GitHub
+          </a>
+        </Reveal>
+      )}
     </section>
   )
 }

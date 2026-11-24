@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { sections, site, themes } from '../../data'
 import { useActiveSection } from '../../hooks/useActiveSection.js'
+import { useModKey } from '../../hooks/useModKey.js'
 import { asset } from '../../lib/asset.js'
 import Icon from '../ui/Icon.jsx'
 
@@ -8,6 +9,7 @@ const sectionIds = sections.map((section) => section.id)
 
 function Navbar({ menuOpen, setMenuOpen, themeId, setThemeId, onOpenPalette }) {
   const activeSection = useActiveSection(sectionIds)
+  const modKey = useModKey() // "⌘" on Mac, "Ctrl" elsewhere
   const navRef = useRef(null)
   const closeMenu = () => setMenuOpen(false)
 
@@ -42,11 +44,11 @@ function Navbar({ menuOpen, setMenuOpen, themeId, setThemeId, onOpenPalette }) {
   return (
     <nav className={`site-nav ${scrolled ? 'scrolled' : ''}`} ref={navRef}>
       <div className="nav-inner">
-        {/* Logo: </Dak Ngueny> */}
+        {/* Logo: <Dak Ngueny /> */}
         <a className="brand" href="#top" onClick={closeMenu}>
-          <span className="bracket">{'</'}</span>
+          <span className="bracket">{'<'}</span>
           {site.name}
-          <span className="bracket">{'>'}</span>
+          <span className="bracket">{' />'}</span>
         </a>
 
         {/* Section links (on phones they drop down when the menu is open) */}
@@ -73,9 +75,9 @@ function Navbar({ menuOpen, setMenuOpen, themeId, setThemeId, onOpenPalette }) {
             type="button"
             className="cmdk-trigger"
             onClick={onOpenPalette}
-            aria-label="Open command menu"
+            aria-label={`Open command menu (${modKey} K)`}
           >
-            <Icon name="command" />
+            <span>{modKey}</span>
             <span>K</span>
           </button>
 
@@ -84,7 +86,7 @@ function Navbar({ menuOpen, setMenuOpen, themeId, setThemeId, onOpenPalette }) {
             href={asset(site.resume.href)}
             download={site.resume.filename}
           >
-            <Icon name="download" /> My Resumé
+            <Icon name="download" /> Résumé
           </a>
 
           {/* Background color picker */}
@@ -93,10 +95,10 @@ function Navbar({ menuOpen, setMenuOpen, themeId, setThemeId, onOpenPalette }) {
               <button
                 key={theme.id}
                 type="button"
-                className={`swatch ${themeId === theme.id ? 'active' : ''}`}
+                className={`swatch has-tip has-tip--below ${themeId === theme.id ? 'active' : ''}`}
                 style={{ background: theme.preview }}
                 aria-label={`${theme.label} background`}
-                title={`${theme.label} background`}
+                data-tip={`${theme.label} background`}
                 aria-pressed={themeId === theme.id}
                 onClick={() => setThemeId(theme.id)}
               />
