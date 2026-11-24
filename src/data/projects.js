@@ -65,8 +65,8 @@ export const projects = {
       title: 'Project with a McGill professor',
       // TODO: once it starts, replace with the topic, your role and the tech used
       role: 'Collaborator on a professor-led project.',
-      description: 'Joining a project led by a McGill professor, starting December 2026.',
-      stack: ['Mentorship', 'Collaboration'],
+      description: 'Joining a project led by a McGill professor, starting January 2027.',
+      stack: ['Python and/or Java (TBD)'],
       status: 'upcoming',
     },
   ],
